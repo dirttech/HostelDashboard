@@ -1,0 +1,70 @@
+﻿using System;
+using System.Data;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using App_Code.FetchingEnergyss;
+using App_Code.FetchingEnergySmap;
+using App_Code.Utility;
+using App_Code.HostelMapping;
+
+public partial class Contact_Us : System.Web.UI.Page
+{
+    public static string username = "";
+    public static string building = "";
+
+    protected void logOut_Click(object sender, EventArgs e)
+    {
+        Session["UserName"] = null;
+        Response.Redirect("~/Default.aspx");
+    }
+    protected void CheckLogin()
+    {
+        if (Session["UserName"] == null || Session["UserName"] == "")
+        {
+            Response.Redirect("~/Default.aspx");
+        }
+        else
+        {
+            nameTitle.InnerText = "Welcome " + Session["UserName"].ToString();
+        }
+    }
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        CheckLogin();
+        if (IsPostBack == false)
+        {
+            try
+            {
+                building = Session["Building"].ToString();
+                username = Session["UserName"].ToString();
+            }
+            catch (Exception exp)
+            {
+                Response.Write("<script>alert('Sorry! Your Meter is not registered yet.');</script>");
+            }
+        }        
+        
+
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            SqlDataSource1.Insert();
+            msg.Text = "Success! We will contact you.";
+            names.Text = "";
+            team.Text = "";
+            message.Text = "";
+        }
+        catch (Exception f)
+        {
+            msg.Text = "Something went wrong!";
+        }
+
+    }
+}

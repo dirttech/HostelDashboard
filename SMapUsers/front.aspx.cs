@@ -1,0 +1,246 @@
+﻿using System;
+using System.Data;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using App_Code.FetchingEnergyss;
+using App_Code.FetchingEnergySmap;
+using App_Code.Utility;
+using App_Code.HostelMapping;
+
+public partial class Users_front : System.Web.UI.Page
+{
+    public float[] energyArray = new float [14];
+
+    public int[] timeSample;
+    public string[] fromTimeArray;
+    public string[] toTimeArray;
+
+    public static string username = "";
+    public static string building = "";
+    public double[] valueSample;
+
+    protected void logOut_Click(object sender, EventArgs e)
+    {
+        Session["UserName"] = null;
+        Response.Redirect("~/Default.aspx");
+    }
+    protected void CheckLogin()
+    {
+        if (Session["UserName"] == null || Session["UserName"] == "")
+        {
+            Response.Redirect("~/Default.aspx");
+        }
+        else
+        {
+            nameTitle.InnerText = "Welcome " + Session["UserName"].ToString();
+        }
+    }
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        CheckLogin();
+        if (IsPostBack == false)
+        {
+            try
+            {
+                building = Session["Building"].ToString();
+                username = Session["UserName"].ToString();
+                GroupMapping grpMap=Group_Mapping.MapGroup(username,building);
+                Avg_Value(DateTime.Today.AddDays(-1), DateTime.Today.AddMinutes(-1), grpMap);
+                if (grpMap != null)
+                {
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add("Room No", typeof(string));
+                    dt.Columns.Add("Occupant Names", typeof(string));
+
+                    for (int i = 0; i < grpMap.Occupants.RoomNos.Count; i++)
+                    {
+                        dt.Rows.Add(grpMap.Occupants.RoomNos[i], grpMap.Occupants.OccupantNames[i]);
+                    }
+                    occupantList.DataSource = dt;
+                    occupantList.DataBind();
+                }
+            }
+            catch (Exception exp)
+            {
+
+            }
+        }        
+        else
+        {
+            Response.Write("<script>alert('Sorry! Your Meter is not registered yet.');</script>");
+        }
+
+        /*
+        DateTime fromTime = DateTime.Now.AddDays(-7);
+        List<int> epochs = Utilitie_S.Return_Bar_Time(fromTime, "7Days");
+        
+       
+        if (epochs != null)
+        {
+            fromTimeArray = new string[epochs.Count];
+            toTimeArray = new string[epochs.Count];
+            List<int> toEpochs = new List<int>();
+            for(int j=0;j<epochs.Count-1;j++)
+            {
+                toEpochs.Add(epochs[j] + (epochs[1] - epochs[0]));
+            }
+
+            fromTimeArray = Utilitie_S.SMapValidDateFormatter(epochs);
+            toTimeArray = Utilitie_S.SMapValidDateFormatter(toEpochs);
+
+            int[] timeSample2;
+            double[] valueSample2;
+
+            FetchEnergyDataS_Map.FetchBarConsumption(fromTimeArray, toTimeArray, apartment, meter_type, out timeSample, out valueSample);
+            FetchEnergyDataS_Map.FetchBarConsumption(fromTimeArray, toTimeArray, apartment, meter_type2, out timeSample2, out valueSample2);
+            Utilitie_S.MeterReadingsMerger(timeSample, timeSample2, valueSample, valueSample2, out timeSample, out valueSample);
+
+            
+            if (valueSample.Length>0)
+            {
+                generateDashs(timeSample, valueSample);
+
+            }
+        }
+
+        double[] energyValues;
+        int[] timeStmp;
+        double[] energyValues2;
+        int[] timeSt2;
+
+        string[] frmArr = new string[2];
+        frmArr[0]=DateTime.Today.AddDays(-1).ToString("MM/dd/yyyy HH:mm");
+        frmArr[1] = DateTime.Today.ToString("MM/dd/yyyy HH:mm");
+
+            
+        string[] toArr=new string[2];
+        toArr[0]=DateTime.Today.AddDays(-1).AddHours(1).ToString("MM/dd/yyyy HH:mm");
+        toArr[1]=DateTime.Today.AddHours(1).ToString("MM/dd/yyyy HH:mm");
+
+        FetchEnergyDataS_Map.FetchBarConsumption(frmArr, toArr , apartment, meter_type, out timeStmp, out energyValues);
+        FetchEnergyDataS_Map.FetchBarConsumption(frmArr, toArr, apartment, meter_type2, out timeSt2, out energyValues2);
+        Utilitie_S.MeterReadingsMerger(timeStmp, timeSt2, energyValues, energyValues2, out timeStmp, out energyValues);
+ 
+        string str1 = "", str2 = "";
+        if (energyValues.Length==2)
+        {
+            str1 = "Previous day (" + DateTime.Now.AddDays(-1).ToString("dd MMM yyyy") + "), You! have consumed <font color='#f18221'>" + Math.Round((energyValues[1] - energyValues[0])/1000,2).ToString() + " KWhrs </font>";
+        }
+
+        double[] avgEnergyValues;
+        int[] avgTimeStmp;
+        double[] avgEnergyValues2;
+        int[] avgTimeStmp2;
+
+        FetchEnergyDataS_Map.FetchAvgConsumption(frmArr, toArr, building, meter_type, out avgTimeStmp, out avgEnergyValues);
+        FetchEnergyDataS_Map.FetchAvgConsumption(frmArr, toArr, building, meter_type2, out avgTimeStmp2, out avgEnergyValues2);
+        Utilitie_S.MeterReadingsMerger(avgTimeStmp, avgTimeStmp2, avgEnergyValues, avgEnergyValues2, out avgTimeStmp, out avgEnergyValues);
+
+        if (avgEnergyValues.Length==2 && energyValues.Length==2)
+        {
+            double avg = avgEnergyValues[1] - avgEnergyValues[0];
+            
+            double percent = 0;
+         
+            percent = ((avg - (energyValues[1] - energyValues[0]))/avg)*100;
+
+            percent = Math.Round(percent, 2, MidpointRounding.ToEven);
+
+            if (percent > 0)
+            {
+                str2 = "which is <font color='#f18221'>" +Convert.ToDouble( percent).ToString() + "% </font> " + " less " + "than " + "your fellow neighbours.";
+            }
+            else
+            {
+                str2 = "which is <font color='#f18221'>" +Convert.ToDouble( Math.Abs(percent)).ToString() + "% </font> " + " more " + "than " + "your fellow neighbours.";
+            }
+           
+        }
+        topLine.InnerHtml = str1 + str2;
+    
+         */
+    }
+
+
+    protected void Avg_Value(DateTime fromdate, DateTime todate, GroupMapping grpMap)
+    {
+        try
+        {
+            double[] energyArray1;
+            int[] timeArray1;
+            double[] energyArray2;
+            int[] timeArray2;
+            double yourValue = 0;
+            int metCt = 0;
+            if (grpMap != null)
+            {
+                FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), fromdate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, grpMap.Meters.MeterId, out timeArray1, out energyArray1);
+                FetchEnergyDataS_Map.FetchAverageConsumption(todate.ToString("MM/dd/yyyy HH:mm"), todate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, grpMap.Meters.MeterId, out timeArray2, out energyArray2);
+                for (int i = 0; i < timeArray1.Length; i++)
+                {
+                    if (energyArray1[i] != -1 && energyArray2[i] != -1)
+                    {
+                        metCt++;
+                        yourValue = yourValue + (energyArray2[i] - energyArray1[i]);
+                    }
+                }
+                if (metCt == 1)
+                {
+                    yourValue = yourValue * 2;
+                }
+            }
+            string str1 = "";
+            str1 = "Previous day (" + DateTime.Now.AddDays(-1).ToString("dd MMM yyyy") + "), You! have consumed <font color='#f18221'>" + Math.Round(yourValue / 1000, 2).ToString() + " KWhrs </font>";
+        
+
+            double[] avgEnergyArray1;
+            int[] avgTimeArray1;
+            double[] avgEnergyArray2;
+            int[] avgTimeArray2;
+            double avgValue = 0, min = 0, max = 0;
+            int meterCount = 0;
+            MeterMapping allMeters = Group_Mapping.ListAllMeters(building);
+            FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), fromdate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, allMeters.MeterId, out avgTimeArray1, out avgEnergyArray1);
+            FetchEnergyDataS_Map.FetchAverageConsumption(todate.ToString("MM/dd/yyyy HH:mm"), todate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, allMeters.MeterId, out avgTimeArray2, out avgEnergyArray2);
+            for (int i = 0; i < avgTimeArray1.Length; i++)
+            {
+                if (avgEnergyArray1[i] != -1 && avgEnergyArray2[i] != -1)
+                {
+                    meterCount++;
+                    avgValue = avgValue + (avgEnergyArray2[i] - avgEnergyArray1[i]);
+                }
+            }
+            avgValue = avgValue / (meterCount / 2);
+
+            double percent = 0; string str2 = "";
+
+            percent = ((avgValue - yourValue) / avgValue) * 100;
+
+            percent = Math.Round(percent, 2, MidpointRounding.ToEven);
+
+            if (percent > 0)
+            {
+                str2 = "which is <font color='#f18221'>" + Convert.ToDouble(percent).ToString() + "% </font> " + " less " + "than " + "your fellow neighbours.";
+            }
+            else
+            {
+                str2 = "which is <font color='#f18221'>" + Convert.ToDouble(Math.Abs(percent)).ToString() + "% </font> " + " more " + "than " + "your fellow neighbours.";
+            }
+            topLine.InnerHtml = str1 + str2;
+
+        }
+        catch (Exception exp)
+        {
+
+        }
+    }
+    protected void occupantList_RowDataBound(object sender, GridViewRowEventArgs e)
+    { 
+    
+    }
+}
