@@ -155,9 +155,9 @@ New Delhi, India - 110020</p>
                             Name</td>
                         <td>
                             <asp:TextBox ID="names" runat="server"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"  
                                 ControlToValidate="names" ErrorMessage="*" Font-Bold="True" 
-                                SetFocusOnError="True"></asp:RequiredFieldValidator>
+                                SetFocusOnError="True" ValidationGroup="cont"></asp:RequiredFieldValidator>
                         </td>
                     </tr>
                     <tr>
@@ -165,7 +165,7 @@ New Delhi, India - 110020</p>
                             Team</td>
                         <td>
                             <asp:TextBox ID="team" runat="server"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" ValidationGroup="cont" runat="server" 
                                 ControlToValidate="team" ErrorMessage="*" Font-Bold="True" 
                                 SetFocusOnError="True"></asp:RequiredFieldValidator>
                         </td>
@@ -175,7 +175,7 @@ New Delhi, India - 110020</p>
                             Message</td>
                         <td>
                             <asp:TextBox ID="message" runat="server" TextMode="MultiLine"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" 
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" ValidationGroup="cont" runat="server" 
                                 ControlToValidate="message" ErrorMessage="*" Font-Bold="True" 
                                 SetFocusOnError="True"></asp:RequiredFieldValidator>
                         </td>
@@ -195,7 +195,7 @@ New Delhi, India - 110020</p>
                                 </InsertParameters>
                             </asp:SqlDataSource>
                             <asp:Button ID="Button1" runat="server" Text="Share" style="float:right;margin-right:17px;" class="customButton"
-                                Width="100px" Height="35px" onclick="Button1_Click"/>
+                                Width="100px" Height="35px" onclick="Button1_Click" ValidationGroup="cont" />
                         </td>
                     </tr>
                 </table>
