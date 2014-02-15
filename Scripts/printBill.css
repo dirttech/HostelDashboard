@@ -17,8 +17,7 @@
         }
          td
         {
-            font-family:Verdana; 
-         
+            font-family:Verdana;       
             
         }
         .tabStyle
@@ -48,6 +47,7 @@
         .printHide
         {
             display:none;
+            visibility:hidden;
         }
         
         

@@ -60,9 +60,14 @@ span
                                 <Columns>
                                     <asp:BoundField DataField="group_id" HeaderText="Group Id" />
                                     <asp:BoundField DataField="room_no" HeaderText="Room No"/>
-                                    <asp:BoundField DataField="occupant_names" HeaderText="Occupants" />
+                                    <asp:TemplateField HeaderText="Occupants">
+                                        <EditItemTemplate>
+                                            <asp:TextBox ID="TextBox1" runat="server" MaxLength="500" Text='<%# Bind("occupant_names") %>'></asp:TextBox>
+                                        </EditItemTemplate>                                       
+                                    </asp:TemplateField>
                                     <asp:CommandField ShowEditButton="true" EditText="edit" />
                                 </Columns>
+                                
                                 <FooterStyle BackColor="#CCCCCC" />
                                 <HeaderStyle BackColor="Black" Font-Bold="True" ForeColor="White" />
                                 <PagerStyle BackColor="#999999" ForeColor="Black" HorizontalAlign="Center" />

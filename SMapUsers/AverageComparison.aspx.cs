@@ -107,26 +107,7 @@ public partial class AverageComparison : System.Web.UI.Page
                 }
                 yourValue = Math.Round(yourValue / (1000*Convert.ToInt32(meterTypeList.SelectedValue)),2);
             }
-            /*
-            double[] avgEnergyArray1;
-            int[] avgTimeArray1;
-            double[] avgEnergyArray2;
-            int[] avgTimeArray2;
-            double avgValue=0,min=0,max=0;
-            int meterCount = 0;
-            MeterMapping allMeters = Group_Mapping.ListAllMeters(building);
-            FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), fromdate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, allMeters.MeterId,out avgTimeArray1,out avgEnergyArray1);
-            FetchEnergyDataS_Map.FetchAverageConsumption(todate.ToString("MM/dd/yyyy HH:mm"), todate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, allMeters.MeterId, out avgTimeArray2, out avgEnergyArray2);
-            for (int i = 0; i < avgTimeArray1.Length; i++)
-            {              
-                if (avgEnergyArray1[i] != -1 && avgEnergyArray2[i] != -1)
-                {
-                    meterCount++;
-                    avgValue =avgValue+(avgEnergyArray2[i] - avgEnergyArray1[i]);
-                }
-            }
-            avgValue = avgValue / (meterCount / 2);
-            */
+
             List<GroupMapping> allGroups = Group_Mapping.ListAllGroups(building);
            
             groupNames = new string[1]; energyValues = new double[1]; timeValues = new string[1];
@@ -162,9 +143,35 @@ public partial class AverageComparison : System.Web.UI.Page
                             yourValue11 = yourValue11 / allGroups[it].OccupantCount;
                         }
                         groupNames[it] = allGroups[it].GroupName;
-                        energyValues[it] = Math.Round(yourValue11/1000,2);
+                        energyValues[it] = Math.Round(yourValue11/1000,2);                       
                     }
                 }
+                if (energyValues.Length > 3)
+                {
+                    var sortedPairs = energyValues.Select((x, i) => new { Value = x, Keys = groupNames[i] }).OrderBy(x => x.Value).ThenBy(x => x.Keys).ToArray();
+                    double[] energyValuer = sortedPairs.Select(x => x.Value).ToArray();
+                    string[] groupNamer = sortedPairs.Select(x => x.Keys).ToArray();
+                    int med = energyValuer.Length / 2;
+
+                    energyValues = new double[4];
+                    groupNames = new string[4];
+
+                    energyValues[0] = energyValuer[0]; groupNames[0] = groupNamer[0];
+                    energyValues[3] = energyValuer[energyValuer.Length - 1]; groupNames[3] = groupNamer[energyValuer.Length - 1];
+
+                    if (yourValue > energyValuer[med])
+                    {
+                        energyValues[1] = energyValuer[med]; groupNames[1] = groupNamer[med];
+                        energyValues[2] = yourValue; groupNames[2] = "You!";
+                    }
+                    else
+                    {
+                        energyValues[2] = energyValuer[med]; groupNames[2] = groupNamer[med];
+                        energyValues[1] = yourValue; groupNames[1] = "You!";
+                    }
+                }
+ 
+
             }            
         }
         catch (Exception exp)

@@ -155,6 +155,7 @@ box-shadow: 0px 0px 8px 0px #000000;
             legend: {
                 layout: 'vertical',
                 align: 'right',
+               
                 verticalAlign: 'top',
                 x: -10,
                 y: 100,

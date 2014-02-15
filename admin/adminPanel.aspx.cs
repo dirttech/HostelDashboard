@@ -34,6 +34,12 @@ public partial class admin_adminPanel : System.Web.UI.Page
         belowFrame.Attributes.Add("src", "userInfo.aspx");
        
     }
+    protected void daily_report_ServerClick(object sender, EventArgs e)
+    {
+        belowFrame.Attributes.Add("src", "DailyReport.aspx");
+    }
+    protected void weekly_report_ServerClick(object sender, EventArgs e)
+    {
 
-    
+    }
 }

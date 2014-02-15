@@ -139,7 +139,7 @@ box-shadow: 0px 0px 8px 0px #000000;
      <h3 id="topLine" runat="server" style="color:white; line-height:25px; width:480px;height:90px;padding-left:5px;"></h3>
     
     </div>
-    </td><td rowspan="2">
+    </td><td rowspan="2" style="vertical-align:top;">
      <div id="weather"></div>
      </td></tr>
     <tr><td style="vertical-align:top;">
