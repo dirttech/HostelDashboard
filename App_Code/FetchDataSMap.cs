@@ -22,67 +22,77 @@ namespace App_Code.FetchingEnergySmap
         static string sURL = "http://192.168.1.40:9101/api/query";
 
 
-        public static void FetchHostelData(string fromtime, string toTime, string min_hour ,string width, string building, string criteria, string meter_id, out Int32[] timeSt, out double[] values)
+        public static void FetchHostelData(string fromtime, string toTime, string min_hour ,string width, string building, string criteria, List<int> meterIds, out Int32[] timeSt, out double[] values)
         {
             string stringData = "";
             timeSt = new int[1];
             values = new double[1];
-
+            int f3Length = 0;
             try
             {
-                stringData = "apply window(first, field='" + min_hour + "', width="+width+", skip_empty='false') to data in ('" + fromtime + "','" + toTime + "') limit 10000000 where Metadata/Location/Building ='" + building + "' and Metadata/Extra/PhysicalParameter='" + criteria + "' and Metadata/Extra/MeterID='" + meter_id + "'";
-
-                HttpWebRequest req = WebRequest.Create(sURL) as HttpWebRequest;
-                IWebProxy iwprxy = WebRequest.GetSystemWebProxy();
-                req.Proxy = iwprxy;
-
-                req.Method = "POST";
-                req.ContentType = "";
-
-                ASCIIEncoding encoding = new ASCIIEncoding();
-                byte[] data = encoding.GetBytes(stringData);
-
-                req.ContentLength = data.Length;
-
-                Stream os = req.GetRequestStream();
-                os.Write(data, 0, data.Length);
-                os.Close();
-
-
-                HttpWebResponse response = req.GetResponse() as HttpWebResponse;
-
-                Stream objStream = req.GetResponse().GetResponseStream();
-
-                StreamReader objReader = new StreamReader(objStream);
-
-                var jss = new JavaScriptSerializer();
-
-                string sline = objReader.ReadLine();
-
-                var f1 = jss.Deserialize<dynamic>(sline);
-
-                var f21 = f1[0];
-                var f2 = f21["uuid"];
-                var f3 = f21["Readings"];
-
-                timeSt = new int[f3.Length];
-                values = new double[f3.Length];
-
-                for (int i = 0; i < f3.Length; i++)
+                for (int j = 0; j < meterIds.Count; j++)
                 {
-                    var f4 = f3[i];
-                    timeSt[i] = Convert.ToInt32(f4[0] / 1000);
-                    if (f4[1] != null)
-                    {
-                        values[i] = Convert.ToDouble(f4[1]);
-                    }
-                    else
-                    {
-                        values[i] = -1;
-                    }
-                }
+                    stringData = "apply window(energy_consumed, field='" + min_hour + "', width=" + width + ", skip_empty='false') to data in ('" + fromtime + "','" + toTime + "') limit 10000000 where Metadata/Location/Building ='" + building + "' and Metadata/Extra/PhysicalParameter='" + criteria + "' and Metadata/Extra/MeterID='" + meterIds[j].ToString() + "'";
 
-                response.Close();
+                    HttpWebRequest req = WebRequest.Create(sURL) as HttpWebRequest;
+                    IWebProxy iwprxy = WebRequest.GetSystemWebProxy();
+                    req.Proxy = iwprxy;
+
+                    req.Method = "POST";
+                    req.ContentType = "";
+
+                    ASCIIEncoding encoding = new ASCIIEncoding();
+                    byte[] data = encoding.GetBytes(stringData);
+
+                    req.ContentLength = data.Length;
+
+                    Stream os = req.GetRequestStream();
+                    os.Write(data, 0, data.Length);
+                    os.Close();
+
+                    HttpWebResponse response = req.GetResponse() as HttpWebResponse;
+
+                    Stream objStream = req.GetResponse().GetResponseStream();
+
+                    StreamReader objReader = new StreamReader(objStream);
+
+                    var jss = new JavaScriptSerializer();
+
+                    string sline = objReader.ReadLine();
+
+                    var f1 = jss.Deserialize<dynamic>(sline);
+
+                    var f21 = f1[0];
+                    var f2 = f21["uuid"];
+                    var f3 = f21["Readings"];
+
+                    if (f3.Length > 0)
+                    {
+                        if (f3Length == 0)
+                        {
+                            timeSt = new int[f3.Length];
+                            values = new double[f3.Length];
+                            f3Length = f3.Length;
+                        }
+                    }                    
+
+                    for (int i = 0; i < f3.Length; i++)
+                    {
+                        var f4 = f3[i];
+                        timeSt[i] = Convert.ToInt32(f4[0] / 1000);
+                        if (f4[1] !=null)
+                        {
+                            values[i] = values[i]+(Convert.ToDouble(f4[1]))/1000;
+                            values[i] = Math.Round(values[i], 2);
+                        }
+                        else
+                        {
+                            values[i] = 0;
+                        }
+                    }
+
+                    response.Close();
+                }
             }
             catch (Exception exp)
             {

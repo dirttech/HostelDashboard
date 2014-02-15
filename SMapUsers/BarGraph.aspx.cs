@@ -72,43 +72,19 @@ public partial class BarGraph : System.Web.UI.Page
     {
         try
         {
-            double[] energyArray1;
-            int[] timeArray1;
-            double[] energyArray2;
-            int[] timeArray2;
             GroupMapping grpMap = Group_Mapping.MapGroup(username, building);
             if (grpMap != null)
             {
-                FetchEnergyDataS_Map.FetchHostelData(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), min_hour,width, building, "Energy", grpMap.Meters.MeterId[0].ToString(), out timeArray1, out energyArray1);        
+               FetchEnergyDataS_Map.FetchHostelData(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), min_hour,width, building, "Energy", grpMap.Meters.MeterId, out timeArray, out energyArray);
                 
-                FetchEnergyDataS_Map.FetchHostelData(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), min_hour,width, building, "Energy", grpMap.Meters.MeterId[1].ToString(), out timeArray2, out energyArray2);
-
-               
-                if (timeArray1.Length > 1)
+               if (timeArray.Length > 1)
                 {
-                    Utilities ut1 = Utilitie_S.EpochToDateTime(timeArray1[0]);
-                    Utilities ut2 = Utilitie_S.EpochToDateTime(timeArray1[timeArray1.Length - 1]);
+                    Utilities ut1 = Utilitie_S.EpochToDateTime(timeArray[0]);
+                    Utilities ut2 = Utilitie_S.EpochToDateTime(timeArray[timeArray.Length - 1]);
                     messg.Text = ut1.Date.ToString("dd MMM") + " - " + ut2.Date.ToString("dd MMM");
-
-                    energyArray = new double[timeArray1.Length - 1];
-                    timeSeries = Utilitie_S.TimeFormatter(timeArray1);
-                    for (int i = 0; i < timeArray1.Length - 1; i++)
-                    {
-                        if (energyArray1[i + 1] == -1 || energyArray2[i + 1] == -1)
-                        {
-                            energyArray[i] = -1;
-                            energyArray[i + 1] = -1;
-                            i = i + 1;
-                        }
-                        else
-                        {
-                            energyArray[i] = Math.Round(((energyArray1[i + 1] + energyArray2[i + 1]) - (energyArray1[i] + energyArray2[i]))/(1000*Convert.ToInt32(meterTypeList.SelectedValue)),2);
-                            if (i == 0 && (energyArray1[i] == -1 || energyArray2[i] == -1))
-                            {
-                                energyArray[i] = -1;
-                            }
-                        }
-                    }
+                   
+                    timeSeries = Utilitie_S.TimeFormatterBar(timeArray);
+                   
                 }
             }
         }

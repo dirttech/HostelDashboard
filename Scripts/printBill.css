@@ -7,6 +7,15 @@
           padding-top:4px;
           font-weight:normal;   
         }
+      .dash
+        {
+            background-color:gray !important;
+            width:200px;
+            height:80px;
+            padding:10px;
+            float:left;
+            margin:5px;
+        }
  .tplbl
         {
          background-color:#FFFF99;   

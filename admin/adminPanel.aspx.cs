@@ -40,6 +40,6 @@ public partial class admin_adminPanel : System.Web.UI.Page
     }
     protected void weekly_report_ServerClick(object sender, EventArgs e)
     {
-
+        belowFrame.Attributes.Add("src", "WeeklyReport.aspx");
     }
 }

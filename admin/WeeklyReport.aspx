@@ -1,10 +1,99 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DailyReport.aspx.cs" Inherits="DailyReport" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="WeeklyReport.aspx.cs" Inherits="WeeklyReport" %>
 <%@ Import Namespace="System.Web.Script.Serialization" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
+     <style type="text/css" media="all">
+        .SideUpperLabel
+        {
+          font-family:@Arial Unicode MS;
+          font-size:large;
+          color:Navy !important;
+          -webkit-print-color-adjust: exact; 
+          padding-left:5px;
+          padding-top:4px;
+          font-weight:normal;   
+        }
+        .customSelect
+        {
+            height: 30px !important;
+            line-height: normal;
+            padding-top: 2px !important;
+            width: 250px;
+        }
+      
+         td
+        {
+            font-family:Verdana; 
+            height:25px;
+        }
+        .tabStyle
+        {
+          min-width:700px !important;
+           -webkit-print-color-adjust: exact; 
+          max-width:1000px !important;
+        }
+        .tplbl
+        {
+         background-color:#FFFF99 !important;
+         -webkit-print-color-adjust: exact;  
+        }
+        .reportHead
+        {
+            text-transform:uppercase;
+            font-size:xx-large;
+        }
+        .normalSpanRight
+        {
+            font-size:large;
+            float:right;
+        }
+        .normalSpanLeft
+        {
+            font-size:large;
+        }
+        .specialSpanRight
+        {
+            font-size:large;
+            float:right;
+        }
+        .specialSpanLeft
+        {
+            font-size:large;
+        }
+        .calculations
+        {
+             width:1000px;
+             z-index:1; 
+        }
+        .dash
+        {
+            background-color:gray !important;
+            width:200px;
+            height:80px;
+            padding:10px;
+            float:left;
+            margin:5px;
+        }
+        .dayed
+        {
+            color:navy;
+            font-size:larger;
+        }
+        .energier
+        {
+            color:black;
+            font-size:larger;
+        }
+        .chkbox
+        {
+           margin-left:70px;
+        }
+     
+    </style>
+    
  <script type="text/javascript">
      function CopyHidden(ths) {
          var hid = ths.getAttribute("UID");
@@ -112,80 +201,7 @@
   <link rel="Stylesheet" type="text/css" media="print" href="../Scripts/Default.css" />
  
    <title>Print Bills</title>
-    <style type="text/css" media="all">
-        .SideUpperLabel
-        {
-          font-family:@Arial Unicode MS;
-          font-size:large;
-          color:Navy !important;
-          -webkit-print-color-adjust: exact; 
-          padding-left:5px;
-          padding-top:4px;
-          font-weight:normal;   
-        }
-        .customSelect
-        {
-            height: 30px;
-            line-height: normal;
-            padding-top: 2px;
-            width: 250px;
-        }
-      
-         td
-        {
-            font-family:Verdana; 
-            height:25px;
-        }
-        .tabStyle
-        {
-          min-width:700px !important;
-           -webkit-print-color-adjust: exact; 
-          max-width:1000px !important;
-        }
-        .tplbl
-        {
-         background-color:#FFFF99 !important;
-         -webkit-print-color-adjust: exact;  
-        }
-        .reportHead
-        {
-            text-transform:uppercase;
-            font-size:xx-large;
-        }
-        .normalSpanRight
-        {
-            font-size:medium;
-            float:right;
-        }
-        .normalSpanLeft
-        {
-            font-size:medium;
-        }
-        .specialSpanRight
-        {
-            font-size:medium;
-            float:right;
-        }
-        .specialSpanLeft
-        {
-            font-size:medium;
-        }
-        .calculations
-        {
-             width:1000px;
-             z-index:1; 
-        }
-        .chkbox
-        {
-           margin-left:70px;
-        }
-      /*   @media print
-        {
-            hr {page-break-before:always}
-            
-        }
-        */
-    </style>
+   
 
     
 </head>
@@ -265,7 +281,7 @@
             </tr>
            
             <tr>
-                <td colspan="2"><hr /></td>
+                <td colspan="2"><hr /></td> 
             </tr>
             <tr>
                 <td><span id="prev_day" runat="server" class="specialSpanLeft"></span></td>
@@ -283,8 +299,12 @@
                 </td>
             </tr>
             <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
+                <td colspan="2"><h4 style="text-align:center;"><hr />YOUR DAILY CONSUMPTION FOR PREVIOUS WEEK</h4></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="margin:0 auto;padding-left:50px;" id="dashes" runat="server">
+
+                </td>
             </tr>
         </table>
     </div>
@@ -297,7 +317,7 @@
                          </h4>
                          <hr />                         
                          <asp:DropDownList ID="reportType" runat="server" CssClass="customSelect">
-                             <asp:ListItem>Daily Report</asp:ListItem>
+                             <asp:ListItem>Weekly Report</asp:ListItem>
                              <asp:ListItem>Public Report</asp:ListItem>
                          </asp:DropDownList>    
                                <asp:Button ID="printBill" runat="server" Text="Calculate" class="customButton" style=" position:relative; 

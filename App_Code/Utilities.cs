@@ -375,12 +375,12 @@ namespace App_Code.Utility
                 if (timeDiff < 100000)
                 {
                     Utilities ut = Utilitie_S.EpochToDateTime(epochs[0]);
-                    timeSeries[0] = (ut.Date.ToString("dd MMM"));
+                    timeSeries[0] = (ut.Date.ToString("dd MMM HH:mm"));
 
                     for (int ep=1;ep<epochs.Length;ep++)
                     {
                         ut=Utilitie_S.EpochToDateTime(epochs[ep]);
-                        timeSeries[ep] = (ut.Date.ToString("dd MMM"));
+                        timeSeries[ep] = (ut.Date.ToString("dd MMM HH:mm"));
                     }
                 }
 
