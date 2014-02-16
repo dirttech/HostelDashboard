@@ -33,11 +33,11 @@ public partial class _Default : System.Web.UI.Page
 
     protected void UserLogin()
     {
-        UserLogin usr = UserLogin_S.NewLoging(usrName.Value, pwd.Value, "Girls Hostel");
+        UserLogin usr = UserLogin_S.NewLoging(usrName.Value, pwd.Value,RadioButtonList1.SelectedValue);
         if (usr != null)
         {
             Session["UserName"] = usrName.Value;
-            Session["Building"] = "Girls Hostel";
+            Session["Building"] = RadioButtonList1.SelectedValue;
            
             Response.Redirect("~/SMapUsers/front.aspx");
         }

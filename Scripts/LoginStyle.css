@@ -238,10 +238,11 @@ display: inline-block;
  
 input[type=radio] {
 -webkit-border-radius: 2em; /* Make radios round */
+
 }
  
 input[type=checkbox]:checked::after {
-content:"âœ”";
+content: "\2713";
 display:block;
 text-align: center;
 font-size: 16px;
@@ -250,7 +251,8 @@ line-height: 18px;
 }
  
 input[type=radio]:checked::after {
-content:"â—";
+content: "\2713";
+
 display:block;
 height: 16px;
 line-height: 15px;

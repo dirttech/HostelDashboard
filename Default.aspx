@@ -64,6 +64,16 @@
         }
     
     
+        .auto-style1
+        {
+            height: 30px;
+        }
+        .auto-style2
+        {
+            width: 517px;
+        }
+    
+    
     </style>
 </head>
 <body>
@@ -72,16 +82,16 @@
         <table  style="background-repeat:no-repeat; -webkit-background-size: cover; background-color:#446b96;
         -moz-background-size: cover;
         -o-background-size: cover; background-size:cover; width:1024px;margin:0 auto; height:680px;margin-top:-8px; padding-bottom:-10px;">
-            <tr ><td colspan="2" style="text-align:center;background-color:lightgray;height:30px;">
+            <tr ><td colspan="2" style="text-align:center;background-color:lightgray;" class="auto-style1">
                     
                <h1>Towards Energy Conservation!</h1>
                 <h2>Monitor your realtime Electricity Consumption.</h2>
 
             </td></tr>
         <tr>
-        <td style="width:600px; vertical-align:top; padding-left:40px;text-align:center;">
-      <h3>Act Smart and Reduce your electricity bill.</h3>
-      <img src="images/login_cover.png" />
+        <td style="vertical-align:top; padding-left:40px;text-align:center;" class="auto-style2">
+     <br />
+      <img src="images/login_cover.png" style="width:600px;" />
         </td>
         <td style="vertical-align:top;"><br />
             <a href="admin/adminLogin.aspx" style="float:right;padding-right:22px; font-family:Verdana;">Admin Login</a>
@@ -93,7 +103,11 @@
       <p><input type="password" name="password" value="" placeholder="Password" runat="server" id="pwd" />
       <input runat="server" type="hidden" id="psHid" />
       </p>
-     
+     <p>
+         <asp:RadioButtonList ID="RadioButtonList1" runat="server" RepeatDirection="Horizontal">
+             <asp:ListItem Selected="True">Boys Hostel</asp:ListItem>
+             <asp:ListItem>Girls Hostel</asp:ListItem>
+         </asp:RadioButtonList></p>
      
       <p class="submit">
           <asp:Button ID="loginUser" runat="server" Text="Login" 
