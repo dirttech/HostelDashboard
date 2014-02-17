@@ -115,12 +115,12 @@ public partial class DailyReport : System.Web.UI.Page
 
                         if (yourValue > energyValuer[med])
                         {
-                            energyValues[1] = energyValuer[med]; groupNames[1] = groupNamer[med];
+                            energyValues[1] = energyValuer[med]; groupNames[1] = groupNamer[med] + " (Median)";
                             energyValues[2] = yourValue; groupNames[2] = "You!";
                         }
                         else
                         {
-                            energyValues[2] = energyValuer[med]; groupNames[2] = groupNamer[med];
+                            energyValues[2] = energyValuer[med]; groupNames[2] = groupNamer[med] + " (Median)";
                             energyValues[1] = yourValue; groupNames[1] = "You!";
                         }
                     }
