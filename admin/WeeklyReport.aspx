@@ -236,7 +236,7 @@
     <div id="hoverDiv"><br />
     <table class="printHide">
 
-    <tr><td style="color:White; font-size:x-large;">Report Interval</td><td>
+    <tr><td style="color:White; font-size:x-large;">Start Date</td><td>
          <div id="datetimepicker1" class="input-append date">
                   <input type="text" id="fromDate" runat="server" style=" margin-left:30px;height:20px;"/>
                   <span class="add-on">

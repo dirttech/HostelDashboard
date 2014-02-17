@@ -57,7 +57,8 @@ public partial class WeeklyReport : System.Web.UI.Page
                 if (timeArray1.Length > 1)
                 {
                     Utilities ut1 = Utilitie_S.EpochToDateTime(timeArray1[0]);
-                    prev_day.InnerText = "Your previous day: " + ut1.Date.ToString("dd MMM yyyy");
+                    Utilities ut2 = Utilitie_S.EpochToDateTime(timeArray2[0]);
+                    prev_day.InnerText = "Your previous week: " + ut1.Date.ToString("dd MMM")+" to "+ut2.Date.ToString("dd MMM yyyy");
 
                     for (int i = 0; i < timeArray1.Length; i++)
                     {
@@ -112,8 +113,8 @@ public partial class WeeklyReport : System.Web.UI.Page
                         energyValues = new double[4];
                         groupNames = new string[4];
 
-                        energyValues[0] = energyValuer[0]; groupNames[0] = groupNamer[0];
-                        energyValues[3] = energyValuer[energyValuer.Length - 1]; groupNames[3] = groupNamer[energyValuer.Length - 1];
+                        energyValues[0] = energyValuer[0]; groupNames[0] = groupNamer[0]+" (Lowest)";
+                        energyValues[3] = energyValuer[energyValuer.Length - 1]; groupNames[3] = groupNamer[energyValuer.Length - 1] + " (Highest)";
 
                         if (yourValue > energyValuer[med])
                         {
@@ -225,7 +226,7 @@ public partial class WeeklyReport : System.Web.UI.Page
             DateTime sampleDate = DateTime.ParseExact(fromDate.Value + ",000", "dd/MM/yyyy HH:mm:ss,fff",
                                                  System.Globalization.CultureInfo.InvariantCulture);
             DateTime frDate = new DateTime(sampleDate.Year, sampleDate.Month, sampleDate.Day, 0, 0, 1);
-            DateTime toDate = new DateTime(sampleDate.Year, sampleDate.Month, sampleDate.Day, 23, 59, 59);
+            DateTime toDate = new DateTime(sampleDate.AddDays(7).Year, sampleDate.AddDays(7).Month, sampleDate.AddDays(7).Day, 23, 59, 59);
             calculatePrint(frDate, toDate);
         }
         catch (Exception exp)

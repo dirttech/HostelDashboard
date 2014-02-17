@@ -110,8 +110,8 @@ public partial class DailyReport : System.Web.UI.Page
                         energyValues = new double[4];
                         groupNames = new string[4];
 
-                        energyValues[0] = energyValuer[0]; groupNames[0] = groupNamer[0];
-                        energyValues[3] = energyValuer[energyValuer.Length - 1]; groupNames[3] = groupNamer[energyValuer.Length - 1];
+                        energyValues[0] = energyValuer[0]; groupNames[0] = groupNamer[0] + " (Lowest)";
+                        energyValues[3] = energyValuer[energyValuer.Length - 1]; groupNames[3] = groupNamer[energyValuer.Length - 1] + " (Highest)";
 
                         if (yourValue > energyValuer[med])
                         {

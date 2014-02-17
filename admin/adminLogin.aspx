@@ -20,6 +20,7 @@
 <link rel="shortcut icon" href="../images/dashboard_icon.png" />
 </head>
 <body>
+    <a href="../Default.aspx" style="font-size:large;"><-- Back to Home</a>
     <br /><br /><br /><br />
 
 <div class="container">

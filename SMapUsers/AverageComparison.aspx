@@ -95,7 +95,7 @@ box-shadow: 0px 0px 8px 0px #000000;
     }
 </style>
 
-    <title>Me! vs Average</title>
+    <title>My Comparison</title>
     <link rel="Stylesheet" type="text/css" media="screen" href="../Scripts/Default.css" />
     <link rel="shortcut icon" href="../images/dashboard_icon.png" />
       
@@ -273,7 +273,7 @@ box-shadow: 0px 0px 8px 0px #000000;
  
      <a href="BarGraph.aspx">My Consumption</a>
 
-     <a href="AverageComparison.aspx" >Me! vs Average</a>
+     <a href="AverageComparison.aspx" >My Comparison</a>
          
     <a href="EnergySavingTips.aspx">Energy Tips</a>
      <a href="ContactUs.aspx" >Contact Us</a>
