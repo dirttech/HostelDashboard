@@ -226,7 +226,7 @@ public partial class WeeklyReport : System.Web.UI.Page
             DateTime sampleDate = DateTime.ParseExact(fromDate.Value + ",000", "dd/MM/yyyy HH:mm:ss,fff",
                                                  System.Globalization.CultureInfo.InvariantCulture);
             DateTime frDate = new DateTime(sampleDate.Year, sampleDate.Month, sampleDate.Day, 0, 0, 1);
-            DateTime toDate = new DateTime(sampleDate.AddDays(7).Year, sampleDate.AddDays(7).Month, sampleDate.AddDays(7).Day, 23, 59, 59);
+            DateTime toDate = new DateTime(sampleDate.AddDays(6).Year, sampleDate.AddDays(6).Month, sampleDate.AddDays(6).Day, 23, 59, 59);
             calculatePrint(frDate, toDate);
         }
         catch (Exception exp)
