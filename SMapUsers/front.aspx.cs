@@ -72,7 +72,7 @@ public partial class Users_front : System.Web.UI.Page
         }        
         else
         {
-            Response.Write("<script>alert('Sorry! Your Meter is not registered yet.');</script>");
+            
         }       
     }
 
@@ -83,21 +83,14 @@ public partial class Users_front : System.Web.UI.Page
         {
             double[] energyArray1;
             int[] timeArray1;
-            double[] energyArray2;
-            int[] timeArray2;
             double yourValue = 0;
             int metCt = 0;
             if (grpMap != null)
             {
-                FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), fromdate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, grpMap.Meters.MeterId, out timeArray1, out energyArray1);
-                FetchEnergyDataS_Map.FetchAverageConsumption(todate.ToString("MM/dd/yyyy HH:mm"), todate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, grpMap.Meters.MeterId, out timeArray2, out energyArray2);
+                FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, grpMap.Meters.MeterId, out timeArray1, out energyArray1);
                 for (int i = 0; i < timeArray1.Length; i++)
                 {
-                    if (energyArray1[i] != -1 && energyArray2[i] != -1)
-                    {
-                        metCt++;
-                        yourValue = yourValue + (energyArray2[i] - energyArray1[i]);
-                    }
+                    yourValue = yourValue + energyArray1[i];
                 }
                 if (metCt == 1)
                 {
@@ -110,20 +103,15 @@ public partial class Users_front : System.Web.UI.Page
 
             double[] avgEnergyArray1;
             int[] avgTimeArray1;
-            double[] avgEnergyArray2;
-            int[] avgTimeArray2;
-            double avgValue = 0, min = 0, max = 0;
+            
+            double avgValue = 0;
             int meterCount = 0;
             MeterMapping allMeters = Group_Mapping.ListAllMeters(building);
-            FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), fromdate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, allMeters.MeterId, out avgTimeArray1, out avgEnergyArray1);
-            FetchEnergyDataS_Map.FetchAverageConsumption(todate.ToString("MM/dd/yyyy HH:mm"), todate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, allMeters.MeterId, out avgTimeArray2, out avgEnergyArray2);
+            FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), building, allMeters.MeterId, out avgTimeArray1, out avgEnergyArray1);
             for (int i = 0; i < avgTimeArray1.Length; i++)
             {
-                if (avgEnergyArray1[i] != -1 && avgEnergyArray2[i] != -1)
-                {
-                    meterCount++;
-                    avgValue = avgValue + (avgEnergyArray2[i] - avgEnergyArray1[i]);
-                }
+                meterCount++;
+                avgValue = avgValue + avgEnergyArray1[i];
             }
             avgValue = avgValue / (meterCount / 2);
 

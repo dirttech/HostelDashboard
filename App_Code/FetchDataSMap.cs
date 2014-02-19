@@ -128,7 +128,7 @@ namespace App_Code.FetchingEnergySmap
                     req.ContentType = "";
 
 
-                    stringData = "select data in ('" + fromTimeArray + "','"+toTimeArray+"') limit 1 where Metadata/Location/Building ='" + location + "' and Metadata/Extra/PhysicalParameter='Energy' and Metadata/Extra/MeterID='"+meterIds[j]+"'";
+                    stringData = "apply energy_consumed to data in ('" + fromTimeArray + "','"+toTimeArray+"') where Metadata/Location/Building ='" + location + "' and Metadata/Extra/PhysicalParameter='Energy' and Metadata/Extra/MeterID='"+meterIds[j]+"'";
 
                     ASCIIEncoding encoding = new ASCIIEncoding();
                     byte[] data = encoding.GetBytes(stringData);

@@ -79,6 +79,13 @@ public partial class BarGraph : System.Web.UI.Page
                 
                if (timeArray.Length > 1)
                 {
+                    for (int l = 0; l < energyArray.Length; l++)
+                    {
+                        if (Convert.ToInt32(meterTypeList.SelectedValue) > 1)
+                        {
+                            energyArray[l] =Math.Round(energyArray[l] / (Convert.ToInt32(meterTypeList.SelectedValue)),2);
+                        }
+                    }
                     Utilities ut1 = Utilitie_S.EpochToDateTime(timeArray[0]);
                     Utilities ut2 = Utilitie_S.EpochToDateTime(timeArray[timeArray.Length - 1]);
                     messg.Text = ut1.Date.ToString("dd MMM") + " - " + ut2.Date.ToString("dd MMM");
@@ -125,7 +132,7 @@ public partial class BarGraph : System.Web.UI.Page
         DateTime sampleDate = DateTime.ParseExact(date1.Value + ",000", "dd/MM/yyyy HH:mm:ss,fff",
                                                System.Globalization.CultureInfo.InvariantCulture);
         DateTime frDate = new DateTime(sampleDate.Year, sampleDate.Month, sampleDate.Day, 0, 0, 1);
-        DateTime toDate = new DateTime(sampleDate.AddDays(1).Year, sampleDate.AddDays(1).Month, sampleDate.AddDays(1).Day, 2, 0, 1);
+        DateTime toDate = new DateTime(sampleDate.AddDays(1).Year, sampleDate.AddDays(1).Month, sampleDate.AddDays(1).Day, 1, 0, 1);
         Plot_Bar_Graph("hour", "1", frDate, toDate);
         DayConsumption.Attributes.Add("class", "topButtons-Selected");
         LastTFHours.Attributes.Remove("class");
@@ -136,7 +143,7 @@ public partial class BarGraph : System.Web.UI.Page
         DateTime sampleDate = DateTime.ParseExact(date2.Value + ",000", "dd/MM/yyyy HH:mm:ss,fff",
                                                System.Globalization.CultureInfo.InvariantCulture);
         DateTime frDate = new DateTime(sampleDate.Year, sampleDate.Month, sampleDate.Day, 0, 0, 1);
-        DateTime toDate = new DateTime(sampleDate.AddDays(9).Year, sampleDate.AddDays(9).Month, sampleDate.AddDays(9).Day, 0, 0, 1);
+        DateTime toDate = new DateTime(sampleDate.AddDays(8).Year, sampleDate.AddDays(8).Month, sampleDate.AddDays(8).Day, 0, 0, 1);
         Plot_Bar_Graph("hour", "24", frDate, toDate);
         WeekConsumption.Attributes.Add("class", "topButtons-Selected");
         LastTFHours.Attributes.Remove("class");

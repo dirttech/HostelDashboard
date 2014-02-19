@@ -50,8 +50,7 @@ public partial class DailyReport : System.Web.UI.Page
                 dated.InnerText = "Date: " + DateTime.Today.ToString("dd/MM/yy");
                 dayed.InnerText = "Day: " + DateTime.Today.DayOfWeek;
 
-                FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), fromdate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), buildingSelect.SelectedValue, grpMap.Meters.MeterId, out timeArray1, out energyArray1);
-                FetchEnergyDataS_Map.FetchAverageConsumption(todate.AddMinutes(-10).ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), buildingSelect.SelectedValue, grpMap.Meters.MeterId, out timeArray2, out energyArray2);
+                FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), buildingSelect.SelectedValue, grpMap.Meters.MeterId, out timeArray1, out energyArray1);
                 if (timeArray1.Length > 1)
                 {
                     Utilities ut1 = Utilitie_S.EpochToDateTime(timeArray1[0]);
@@ -59,11 +58,7 @@ public partial class DailyReport : System.Web.UI.Page
 
                     for (int i = 0; i < timeArray1.Length; i++)
                     {
-                        if (energyArray1[i] != -1 && energyArray2[i] != -1)
-                        {
-                            metCt++;
-                            yourValue = yourValue + (energyArray2[i] - energyArray1[i]);
-                        }
+                            yourValue = yourValue + energyArray1[i];
                     }
                 }
                 yourValue = Math.Round(yourValue / 1000, 2);
@@ -79,22 +74,14 @@ public partial class DailyReport : System.Web.UI.Page
                     for (int it = 0; it < allGroups.Count; it++)
                     {
                         double[] energyArray11;
-                        int[] timeArray11;
-                        double[] energyArray22;
-                        int[] timeArray22;
+                        int[] timeArray11;                       
                         double yourValue11 = 0;
-                        int metCt11 = 0;
                         if (allGroups[it] != null)
                         {
-                            FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), fromdate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), buildingSelect.SelectedValue, allGroups[it].Meters.MeterId, out timeArray11, out energyArray11);
-                            FetchEnergyDataS_Map.FetchAverageConsumption(todate.AddMinutes(-10).ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), buildingSelect.SelectedValue, allGroups[it].Meters.MeterId, out timeArray22, out energyArray22);
+                            FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), buildingSelect.SelectedValue, allGroups[it].Meters.MeterId, out timeArray11, out energyArray11);
                             for (int iit = 0; iit < timeArray11.Length; iit++)
                             {
-                                if (energyArray11[iit] != -1 && energyArray22[iit] != -1)
-                                {
-                                    metCt++;
-                                    yourValue11 = yourValue11 + (energyArray22[iit] - energyArray11[iit]);
-                                }
+                                    yourValue11 = yourValue11 + energyArray11[iit];
                             }
                             groupNames[it] = allGroups[it].GroupName;
                             energyValues[it] = Math.Round(yourValue11 / 1000, 2);

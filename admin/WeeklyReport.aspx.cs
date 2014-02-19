@@ -38,13 +38,10 @@ public partial class WeeklyReport : System.Web.UI.Page
             GroupMapping grpMap = Group_Mapping.MapGroup(uid.Value, buildingSelect.SelectedValue);
             double[] energyArray1;
             int[] timeArray1;
-            double[] energyArray2;
-            int[] timeArray2;
             double yourValue = 0;
-            int metCt = 0;
             if (grpMap != null)
             {
-                generateDashes(7, todate, grpMap);
+                generateDashes(7, fromdate, grpMap);
                 reportHead.InnerText = reportType.SelectedValue;
                 group_id.InnerText = "Group: " + grpMap.GroupId;
                 group_building.InnerText = grpMap.Building;
@@ -52,21 +49,16 @@ public partial class WeeklyReport : System.Web.UI.Page
                 dated.InnerText = "Date: " + DateTime.Today.ToString("dd/MM/yy");
                 dayed.InnerText = "Day: " + DateTime.Today.DayOfWeek;
 
-                FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), fromdate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), buildingSelect.SelectedValue, grpMap.Meters.MeterId, out timeArray1, out energyArray1);
-                FetchEnergyDataS_Map.FetchAverageConsumption(todate.AddMinutes(-10).ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), buildingSelect.SelectedValue, grpMap.Meters.MeterId, out timeArray2, out energyArray2);
+                FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), buildingSelect.SelectedValue, grpMap.Meters.MeterId, out timeArray1, out energyArray1);
                 if (timeArray1.Length > 1)
                 {
                     Utilities ut1 = Utilitie_S.EpochToDateTime(timeArray1[0]);
-                    Utilities ut2 = Utilitie_S.EpochToDateTime(timeArray2[0]);
-                    prev_day.InnerText = "Your previous week: " + ut1.Date.ToString("dd MMM")+" to "+ut2.Date.ToString("dd MMM yyyy");
+                   
+                    prev_day.InnerText = "Your previous week: " + ut1.Date.ToString("dd MMM")+" to "+todate.ToString("dd MMM yyyy");
 
                     for (int i = 0; i < timeArray1.Length; i++)
                     {
-                        if (energyArray1[i] != -1 && energyArray2[i] != -1)
-                        {
-                            metCt++;
-                            yourValue = yourValue + (energyArray2[i] - energyArray1[i]);
-                        }
+                        yourValue = yourValue + energyArray1[i];
                     }
                 }
                 yourValue = Math.Round(yourValue / 1000, 2);
@@ -83,21 +75,13 @@ public partial class WeeklyReport : System.Web.UI.Page
                     {
                         double[] energyArray11;
                         int[] timeArray11;
-                        double[] energyArray22;
-                        int[] timeArray22;
                         double yourValue11 = 0;
-                        int metCt11 = 0;
                         if (allGroups[it] != null)
                         {
-                            FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), fromdate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), buildingSelect.SelectedValue, allGroups[it].Meters.MeterId, out timeArray11, out energyArray11);
-                            FetchEnergyDataS_Map.FetchAverageConsumption(todate.AddMinutes(-10).ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), buildingSelect.SelectedValue, allGroups[it].Meters.MeterId, out timeArray22, out energyArray22);
+                            FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), buildingSelect.SelectedValue, allGroups[it].Meters.MeterId, out timeArray11, out energyArray11);
                             for (int iit = 0; iit < timeArray11.Length; iit++)
                             {
-                                if (energyArray11[iit] != -1 && energyArray22[iit] != -1)
-                                {
-                                    metCt++;
-                                    yourValue11 = yourValue11 + (energyArray22[iit] - energyArray11[iit]);
-                                }
+                                    yourValue11 = yourValue11 + energyArray11[iit];
                             }
                             groupNames[it] = allGroups[it].GroupName;
                             energyValues[it] = Math.Round(yourValue11 / 1000, 2);
@@ -136,12 +120,12 @@ public partial class WeeklyReport : System.Web.UI.Page
         }
     }
 
-    protected void generateDashes(int numberOfDays, DateTime toDate, GroupMapping grpMap)
+    protected void generateDashes(int numberOfDays, DateTime fromDate, GroupMapping grpMap)
     {
         try
         {
             dashes.Controls.Clear();
-            FetchEnergyDataS_Map.FetchHostelData(toDate.AddDays(-numberOfDays).ToString("MM/dd/yyyy HH:mm"), toDate.ToString("MM/dd/yyyy HH:mm"), "hour", "24", grpMap.Building, "Energy", grpMap.Meters.MeterId, out timeArray, out energyArray);
+            FetchEnergyDataS_Map.FetchHostelData(new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 1).ToString("MM/dd/yyyy HH:mm"), new DateTime(fromDate.AddDays(6).Year, fromDate.AddDays(6).Month, fromDate.AddDays(6).Day, 23, 59, 59).ToString("MM/dd/yyyy HH:mm"), "hour", "24", grpMap.Building, "Energy", grpMap.Meters.MeterId, out timeArray, out energyArray);
             for (int i = 0; i < energyArray.Length; i++)
             {
                 HtmlGenericControl dash = new HtmlGenericControl("div");
@@ -226,7 +210,7 @@ public partial class WeeklyReport : System.Web.UI.Page
             DateTime sampleDate = DateTime.ParseExact(fromDate.Value + ",000", "dd/MM/yyyy HH:mm:ss,fff",
                                                  System.Globalization.CultureInfo.InvariantCulture);
             DateTime frDate = new DateTime(sampleDate.Year, sampleDate.Month, sampleDate.Day, 0, 0, 1);
-            DateTime toDate = new DateTime(sampleDate.AddDays(6).Year, sampleDate.AddDays(6).Month, sampleDate.AddDays(6).Day, 23, 59, 59);
+            DateTime toDate = new DateTime(sampleDate.AddDays(7).Year, sampleDate.AddDays(7).Month, sampleDate.AddDays(7).Day, 0, 0, 1);
             calculatePrint(frDate, toDate);
         }
         catch (Exception exp)

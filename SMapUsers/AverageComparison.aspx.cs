@@ -77,33 +77,19 @@ public partial class AverageComparison : System.Web.UI.Page
             GroupMapping grpMap = Group_Mapping.MapGroup(username, building);
             double[] energyArray1;
             int[] timeArray1;
-            double[] energyArray2;
-            int[] timeArray2;
             double yourValue = 0;
-            int metCt = 0;
             if (grpMap != null)
             {
-                FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), fromdate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, grpMap.Meters.MeterId, out timeArray1, out energyArray1);
-                FetchEnergyDataS_Map.FetchAverageConsumption(todate.ToString("MM/dd/yyyy HH:mm"), todate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, grpMap.Meters.MeterId, out timeArray2, out energyArray2);
+                FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), building, grpMap.Meters.MeterId, out timeArray1, out energyArray1);
                 if (timeArray1.Length > 1)
                 {
                     Utilities ut1 = Utilitie_S.EpochToDateTime(timeArray1[0]);
-                    Utilities ut2 = Utilitie_S.EpochToDateTime(timeArray2[0]);
-                    messg.Text = ut1.Date.ToString("dd MMM") + " - " + ut2.Date.ToString("dd MMM");
+                    messg.Text = ut1.Date.ToString("dd MMM") + " - " + todate.ToString("dd MMM");
 
                     for (int i = 0; i < timeArray1.Length; i++)
                     {
-
-                        if (energyArray1[i] != -1 && energyArray2[i] != -1)
-                        {
-                            metCt++;
-                            yourValue = yourValue + (energyArray2[i] - energyArray1[i]);
-                        }
+                            yourValue = yourValue + energyArray1[i];
                     }
-                }
-                if (metCt == 1)
-                {
-                    yourValue = yourValue * 2;
                 }
                 yourValue = Math.Round(yourValue / (1000*Convert.ToInt32(meterTypeList.SelectedValue)),2);
             }
@@ -118,21 +104,14 @@ public partial class AverageComparison : System.Web.UI.Page
                 {
                     double[] energyArray11;
                     int[] timeArray11;
-                    double[] energyArray22;
-                    int[] timeArray22;
                     double yourValue11 = 0;
                     int metCt11 = 0;
                     if (allGroups[it] != null)
                     {
-                        FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), fromdate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, allGroups[it].Meters.MeterId, out timeArray11, out energyArray11);
-                        FetchEnergyDataS_Map.FetchAverageConsumption(todate.ToString("MM/dd/yyyy HH:mm"), todate.AddMinutes(10).ToString("MM/dd/yyyy HH:mm"), building, allGroups[it].Meters.MeterId, out timeArray22, out energyArray22);
+                        FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), building, allGroups[it].Meters.MeterId, out timeArray11, out energyArray11);
                         for (int iit = 0; iit < timeArray11.Length; iit++)
                         {
-                            if (energyArray11[iit] != -1 && energyArray22[iit] != -1)
-                            {
-                                metCt++;
-                                yourValue11 = yourValue11 + (energyArray22[iit] - energyArray11[iit]);
-                            }
+                                yourValue11 = yourValue11 + energyArray11[iit];
                         }
                         if (metCt11 == 1)
                         {
