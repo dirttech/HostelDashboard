@@ -38,6 +38,21 @@ public partial class _Default : System.Web.UI.Page
         {
             Session["UserName"] = usrName.Value;
             Session["Building"] = RadioButtonList1.SelectedValue;
+
+            try
+            {
+                WebAnalytics.LoggerService LG = new LoggerService();
+
+                LoggingEvent logObj = new LoggingEvent();
+                logObj.EventID = "Hostel Login";
+                logObj.UserID = usr.GroupId;
+                bool sts = LG.LogEventHostel(logObj);
+
+            }
+            catch (Exception exp)
+            {
+
+            }
            
             Response.Redirect("~/SMapUsers/front.aspx");
         }

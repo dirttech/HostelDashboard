@@ -37,6 +37,7 @@
      <a id="user_info" runat="server" onserverclick="usrInfo_Click" >User Info</a>
      <a id="daily_report" runat="server" onserverclick="daily_report_ServerClick">Daily Report</a>
         <a id="weekly_report" runat="server" onserverclick="weekly_report_ServerClick">Weekly Report</a>
+        <a id="hostel_analytics" runat="server" onserverclick="hostel_analytics_ServerClick">Hostel Analytics</a>
      </div>
        <asp:LinkButton ID="logOut" runat="server"  
         style="color:Black; font-weight:bold;  position:absolute; top:5px; right:20px;" 

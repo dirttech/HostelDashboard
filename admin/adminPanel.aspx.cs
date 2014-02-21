@@ -42,4 +42,8 @@ public partial class admin_adminPanel : System.Web.UI.Page
     {
         belowFrame.Attributes.Add("src", "WeeklyReport.aspx");
     }
+    protected void hostel_analytics_ServerClick(object sender, EventArgs e)
+    {
+        belowFrame.Attributes.Add("src", "HostelUserAnalytics.aspx");
+    }
 }

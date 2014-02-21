@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://mylogger.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://mylogger.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://mylogger.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://mylogger.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://mylogger.org/">
-      <s:import namespace="http://microsoft.com/wsdl/types/" />
-      <s:element name="HelloWorld">
+      <s:element name="TestLogEvent">
         <s:complexType />
       </s:element>
-      <s:element name="HelloWorldResponse">
+      <s:element name="TestLogEventResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="HelloWorldResult" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TestLogEventResult" type="s:boolean" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -22,8 +21,6 @@
       </s:element>
       <s:complexType name="LoggingEvent">
         <s:sequence>
-          <s:element minOccurs="1" maxOccurs="1" name="id" type="s1:guid" />
-          <s:element minOccurs="1" maxOccurs="1" name="dated" type="s:dateTime" />
           <s:element minOccurs="0" maxOccurs="1" name="EventID" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="UserID" type="s:string" />
         </s:sequence>
@@ -35,20 +32,27 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-    </s:schema>
-    <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
-      <s:simpleType name="guid">
-        <s:restriction base="s:string">
-          <s:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
-        </s:restriction>
-      </s:simpleType>
+      <s:element name="LogEventHostel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="logObj" type="tns:LoggingEvent" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LogEventHostelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="LogEventHostelResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
     </s:schema>
   </wsdl:types>
-  <wsdl:message name="HelloWorldSoapIn">
-    <wsdl:part name="parameters" element="tns:HelloWorld" />
+  <wsdl:message name="TestLogEventSoapIn">
+    <wsdl:part name="parameters" element="tns:TestLogEvent" />
   </wsdl:message>
-  <wsdl:message name="HelloWorldSoapOut">
-    <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
+  <wsdl:message name="TestLogEventSoapOut">
+    <wsdl:part name="parameters" element="tns:TestLogEventResponse" />
   </wsdl:message>
   <wsdl:message name="LogEventSoapIn">
     <wsdl:part name="parameters" element="tns:LogEvent" />
@@ -56,20 +60,30 @@
   <wsdl:message name="LogEventSoapOut">
     <wsdl:part name="parameters" element="tns:LogEventResponse" />
   </wsdl:message>
+  <wsdl:message name="LogEventHostelSoapIn">
+    <wsdl:part name="parameters" element="tns:LogEventHostel" />
+  </wsdl:message>
+  <wsdl:message name="LogEventHostelSoapOut">
+    <wsdl:part name="parameters" element="tns:LogEventHostelResponse" />
+  </wsdl:message>
   <wsdl:portType name="LoggerServiceSoap">
-    <wsdl:operation name="HelloWorld">
-      <wsdl:input message="tns:HelloWorldSoapIn" />
-      <wsdl:output message="tns:HelloWorldSoapOut" />
+    <wsdl:operation name="TestLogEvent">
+      <wsdl:input message="tns:TestLogEventSoapIn" />
+      <wsdl:output message="tns:TestLogEventSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="LogEvent">
       <wsdl:input message="tns:LogEventSoapIn" />
       <wsdl:output message="tns:LogEventSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="LogEventHostel">
+      <wsdl:input message="tns:LogEventHostelSoapIn" />
+      <wsdl:output message="tns:LogEventHostelSoapOut" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="LoggerServiceSoap" type="tns:LoggerServiceSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="HelloWorld">
-      <soap:operation soapAction="http://mylogger.org/HelloWorld" style="document" />
+    <wsdl:operation name="TestLogEvent">
+      <soap:operation soapAction="http://mylogger.org/TestLogEvent" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -86,11 +100,20 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="LogEventHostel">
+      <soap:operation soapAction="http://mylogger.org/LogEventHostel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="LoggerServiceSoap12" type="tns:LoggerServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="HelloWorld">
-      <soap12:operation soapAction="http://mylogger.org/HelloWorld" style="document" />
+    <wsdl:operation name="TestLogEvent">
+      <soap12:operation soapAction="http://mylogger.org/TestLogEvent" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -100,6 +123,15 @@
     </wsdl:operation>
     <wsdl:operation name="LogEvent">
       <soap12:operation soapAction="http://mylogger.org/LogEvent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LogEventHostel">
+      <soap12:operation soapAction="http://mylogger.org/LogEventHostel" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

@@ -11,6 +11,7 @@ using App_Code.FetchingEnergyss;
 using App_Code.FetchingEnergySmap;
 using App_Code.Utility;
 using App_Code.HostelMapping;
+using WebAnalytics;
 
 public partial class Contact_Us : System.Web.UI.Page
 {
@@ -42,6 +43,21 @@ public partial class Contact_Us : System.Web.UI.Page
             {
                 building = Session["Building"].ToString();
                 username = Session["UserName"].ToString();
+
+                try
+                {
+                    WebAnalytics.LoggerService LG = new LoggerService();
+
+                    LoggingEvent logObj = new LoggingEvent();
+                    logObj.EventID = "Hostel Contact Us Page";
+                    logObj.UserID = username;
+                    bool sts = LG.LogEvent(logObj);
+
+                }
+                catch (Exception exp)
+                {
+
+                }
             }
             catch (Exception exp)
             {

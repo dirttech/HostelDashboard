@@ -11,6 +11,7 @@ using App_Code.FetchingEnergyss;
 using App_Code.FetchingEnergySmap;
 using App_Code.Utility;
 using App_Code.HostelMapping;
+using WebAnalytics;
 
 public partial class Users_front : System.Web.UI.Page
 {
@@ -53,6 +54,21 @@ public partial class Users_front : System.Web.UI.Page
                 Avg_Value(DateTime.Today.AddDays(-1), DateTime.Today.AddMinutes(-1), grpMap);
                 if (grpMap != null)
                 {
+                    try
+                    {
+                        WebAnalytics.LoggerService LG = new LoggerService();
+
+                        LoggingEvent logObj = new LoggingEvent();
+                        logObj.EventID = "Hostel Home Page";
+                        logObj.UserID = grpMap.GroupId;
+                        bool sts = LG.LogEvent(logObj);
+
+                    }
+                    catch (Exception exp)
+                    {
+
+                    }
+
                     DataTable dt = new DataTable();
                     dt.Columns.Add("Room No", typeof(string));
                     dt.Columns.Add("Occupant Names", typeof(string));

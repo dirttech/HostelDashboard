@@ -13,14 +13,14 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
 
-namespace App_Code.Analytics
+namespace App_Code.HostelAnalytics
 {
 
-    public class AnalyticUI
+    public class HostelAnalyticUI
     {
         #region Constructer
 
-        public AnalyticUI()
+        public HostelAnalyticUI()
         {
             //this.Id = Guid.NewGuid();
         }
@@ -61,7 +61,7 @@ namespace App_Code.Analytics
 
     }
 
-    public static class Analytic_UI
+    public static class HostelAnalytic_UI
     {
         #region Feilds
 
@@ -74,9 +74,9 @@ namespace App_Code.Analytics
 
         #region Methods
 
-        public static List<AnalyticUI> GetAnalyticListBetweenTime(DateTime fromTime, DateTime toTime)
+        public static List<HostelAnalyticUI> GetAnalyticListBetweenTime(DateTime fromTime, DateTime toTime)
         {
-            List<AnalyticUI> AnalyticsObjList = new List<AnalyticUI>();
+            List<HostelAnalyticUI> AnalyticsObjList = new List<HostelAnalyticUI>();
 
             try
             {
@@ -87,7 +87,7 @@ namespace App_Code.Analytics
                     using (DbCommand cmd = conn.CreateCommand())
                     {
 
-                        string sqlQuery = "SELECT event_id,user_id,dated,id FROM event_log WHERE dated BETWEEN @fromDate AND @toDate ORDER BY user_id,dated ASC";
+                        string sqlQuery = "SELECT event_id,user_id,dated,id FROM event_log_hostel WHERE dated BETWEEN @fromDate AND @toDate ORDER BY user_id,dated ASC";
 
                         if (parmPrefix != "@")
                         {
@@ -114,10 +114,10 @@ namespace App_Code.Analytics
                         {
                             if (rdr.HasRows)
                             {
-                                AnalyticUI fetchObj;
+                                HostelAnalyticUI fetchObj;
                                 while (rdr.Read())
                                 {
-                                    fetchObj = new AnalyticUI();
+                                    fetchObj = new HostelAnalyticUI();
 
                                     if (!rdr.IsDBNull(0))
                                     {

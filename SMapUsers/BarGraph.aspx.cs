@@ -10,6 +10,7 @@ using App_Code.FetchingEnergySmap;
 using App_Code.Utility;
 using System.Web.Script.Serialization;
 using App_Code.HostelMapping;
+using WebAnalytics;
 
 public partial class BarGraph : System.Web.UI.Page
 {
@@ -61,7 +62,24 @@ public partial class BarGraph : System.Web.UI.Page
             DateTime todate = DateTime.Now.AddHours(1);
             Plot_Bar_Graph("hour", "1", frdate, todate);
             GroupMapping grpMap = Group_Mapping.MapGroup(username, building);
-            meterTypeList.Items.Add(new ListItem("Per Occupant", grpMap.OccupantCount.ToString()));
+            if (grpMap != null)
+            {
+                meterTypeList.Items.Add(new ListItem("Per Occupant", grpMap.OccupantCount.ToString()));
+                try
+                {
+                    WebAnalytics.LoggerService LG = new LoggerService();
+
+                    LoggingEvent logObj = new LoggingEvent();
+                    logObj.EventID = "Hostel My Consumption Page";
+                    logObj.UserID = grpMap.GroupId;
+                    bool sts = LG.LogEvent(logObj);
+
+                }
+                catch (Exception exp)
+                {
+
+                }
+            }
         }   
     }
     protected void submitDate_Click(object sender, EventArgs e)
@@ -109,6 +127,21 @@ public partial class BarGraph : System.Web.UI.Page
         LastTFHours.Attributes.Add("class", "topButtons-Selected");
         WeekConsumption.Attributes.Remove("class");
         DayConsumption.Attributes.Remove("class");
+
+        try
+        {
+            WebAnalytics.LoggerService LG = new LoggerService();
+
+            LoggingEvent logObj = new LoggingEvent();
+            logObj.EventID = "My Consumption Page View Changed To "+meterTypeList.SelectedItem.Text;
+            logObj.UserID = username;
+            bool sts = LG.LogEvent(logObj);
+
+        }
+        catch (Exception exp)
+        {
+
+        }
     }
     protected void LastTFHours_Click(object sender, EventArgs e)
     {
@@ -118,6 +151,21 @@ public partial class BarGraph : System.Web.UI.Page
         LastTFHours.Attributes.Add("class", "topButtons-Selected");
         WeekConsumption.Attributes.Remove("class");
         DayConsumption.Attributes.Remove("class");
+
+        try
+        {
+            WebAnalytics.LoggerService LG = new LoggerService();
+
+            LoggingEvent logObj = new LoggingEvent();
+            logObj.EventID = "My Consumption Page Last 24 Hours";
+            logObj.UserID = username;
+            bool sts = LG.LogEvent(logObj);
+
+        }
+        catch (Exception exp)
+        {
+
+        }
     }
     protected void DayConsumption_Click(object sender, EventArgs e)
     {
@@ -137,6 +185,21 @@ public partial class BarGraph : System.Web.UI.Page
         DayConsumption.Attributes.Add("class", "topButtons-Selected");
         LastTFHours.Attributes.Remove("class");
         WeekConsumption.Attributes.Remove("class");
+
+        try
+        {
+            WebAnalytics.LoggerService LG = new LoggerService();
+
+            LoggingEvent logObj = new LoggingEvent();
+            logObj.EventID = "My Consumption Page Day Consumption";
+            logObj.UserID = username;
+            bool sts = LG.LogEvent(logObj);
+
+        }
+        catch (Exception exp)
+        {
+
+        }
     }
     protected void selectWeek_Click(object sender, EventArgs e)
     {
@@ -148,5 +211,20 @@ public partial class BarGraph : System.Web.UI.Page
         WeekConsumption.Attributes.Add("class", "topButtons-Selected");
         LastTFHours.Attributes.Remove("class");
         DayConsumption.Attributes.Remove("class");
+
+        try
+        {
+            WebAnalytics.LoggerService LG = new LoggerService();
+
+            LoggingEvent logObj = new LoggingEvent();
+            logObj.EventID = "My Consumption Page Week Consumption";
+            logObj.UserID = username;
+            bool sts = LG.LogEvent(logObj);
+
+        }
+        catch (Exception exp)
+        {
+
+        }
     }
 }

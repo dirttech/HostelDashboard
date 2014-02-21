@@ -9,6 +9,7 @@ using App_Code.FetchingEnergySmap;
 using App_Code.Utility;
 using System.Web.Script.Serialization;
 using App_Code.HostelMapping;
+using WebAnalytics;
 
 public partial class AverageComparison : System.Web.UI.Page
 {
@@ -43,9 +44,6 @@ public partial class AverageComparison : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (IsPostBack == false)
-        {
-        }
         CheckLogin();
 
         if (Session["UserName"] != null && Session["Building"] != null)
@@ -67,6 +65,23 @@ public partial class AverageComparison : System.Web.UI.Page
             Response.Write("<script>alert('Sorry! Your Meter is not registered yet.');</script>");
             //Session["UserName"] = null;
             //Response.Redirect("LoginPage.aspx");
+        }
+        if (IsPostBack == false)
+        {
+            try
+            {
+                WebAnalytics.LoggerService LG = new LoggerService();
+
+                LoggingEvent logObj = new LoggingEvent();
+                logObj.EventID = "My Comparison Page";
+                logObj.UserID = username;
+                bool sts = LG.LogEventHostel(logObj);
+
+            }
+            catch (Exception exp)
+            {
+
+            }
         }
     }
 
@@ -171,7 +186,22 @@ public partial class AverageComparison : System.Web.UI.Page
         Plot_Avg_Graph(frdate, todate);
         LastTFHours.Attributes.Add("class", "topButtons-Selected");
         WeekConsumption.Attributes.Remove("class");
-        DayConsumption.Attributes.Remove("class");   
+        DayConsumption.Attributes.Remove("class");
+
+        try
+        {
+            WebAnalytics.LoggerService LG = new LoggerService();
+
+            LoggingEvent logObj = new LoggingEvent();
+            logObj.EventID = "My Comparison Page View Changed To "+meterTypeList.SelectedItem.Text;
+            logObj.UserID = username;
+            bool sts = LG.LogEventHostel(logObj);
+
+        }
+        catch (Exception exp)
+        {
+
+        }
     }
 
     protected void logOut_Click(object sender, EventArgs e)
@@ -188,6 +218,21 @@ public partial class AverageComparison : System.Web.UI.Page
         LastTFHours.Attributes.Add("class", "topButtons-Selected");
         WeekConsumption.Attributes.Remove("class");
         DayConsumption.Attributes.Remove("class");
+
+        try
+        {
+            WebAnalytics.LoggerService LG = new LoggerService();
+
+            LoggingEvent logObj = new LoggingEvent();
+            logObj.EventID = "My Comparison Page Last 24 Hours";
+            logObj.UserID = username;
+            bool sts = LG.LogEventHostel(logObj);
+
+        }
+        catch (Exception exp)
+        {
+
+        }
     }
     protected void DayConsumption_Click(object sender, EventArgs e)
     {
@@ -207,6 +252,21 @@ public partial class AverageComparison : System.Web.UI.Page
         DayConsumption.Attributes.Add("class", "topButtons-Selected");
         LastTFHours.Attributes.Remove("class");
         WeekConsumption.Attributes.Remove("class");
+
+        try
+        {
+            WebAnalytics.LoggerService LG = new LoggerService();
+
+            LoggingEvent logObj = new LoggingEvent();
+            logObj.EventID = "My Comparison Page Day Consumption";
+            logObj.UserID = username;
+            bool sts = LG.LogEventHostel(logObj);
+
+        }
+        catch (Exception exp)
+        {
+
+        }
     }
     
     protected void selectWeek_Click(object sender, EventArgs e)
@@ -219,5 +279,20 @@ public partial class AverageComparison : System.Web.UI.Page
         WeekConsumption.Attributes.Add("class", "topButtons-Selected");
         LastTFHours.Attributes.Remove("class");
         DayConsumption.Attributes.Remove("class");
+
+        try
+        {
+            WebAnalytics.LoggerService LG = new LoggerService();
+
+            LoggingEvent logObj = new LoggingEvent();
+            logObj.EventID = "My Comparison Page Week Consumption";
+            logObj.UserID = username;
+            bool sts = LG.LogEventHostel(logObj);
+
+        }
+        catch (Exception exp)
+        {
+
+        }
     }
 }
