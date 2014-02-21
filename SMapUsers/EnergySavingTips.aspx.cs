@@ -51,7 +51,7 @@ public partial class Energy_Tips : System.Web.UI.Page
                     LoggingEvent logObj = new LoggingEvent();
                     logObj.EventID = "Hostel Energy Saving Tips Page";
                     logObj.UserID = username;
-                    bool sts = LG.LogEvent(logObj);
+                    bool sts = LG.LogEventHostel(logObj);
 
                 }
                 catch (Exception exp)

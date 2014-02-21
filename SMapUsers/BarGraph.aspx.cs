@@ -72,7 +72,7 @@ public partial class BarGraph : System.Web.UI.Page
                     LoggingEvent logObj = new LoggingEvent();
                     logObj.EventID = "Hostel My Consumption Page";
                     logObj.UserID = grpMap.GroupId;
-                    bool sts = LG.LogEvent(logObj);
+                    bool sts = LG.LogEventHostel(logObj);
 
                 }
                 catch (Exception exp)
@@ -135,7 +135,7 @@ public partial class BarGraph : System.Web.UI.Page
             LoggingEvent logObj = new LoggingEvent();
             logObj.EventID = "My Consumption Page View Changed To "+meterTypeList.SelectedItem.Text;
             logObj.UserID = username;
-            bool sts = LG.LogEvent(logObj);
+            bool sts = LG.LogEventHostel(logObj);
 
         }
         catch (Exception exp)
@@ -159,7 +159,7 @@ public partial class BarGraph : System.Web.UI.Page
             LoggingEvent logObj = new LoggingEvent();
             logObj.EventID = "My Consumption Page Last 24 Hours";
             logObj.UserID = username;
-            bool sts = LG.LogEvent(logObj);
+            bool sts = LG.LogEventHostel(logObj);
 
         }
         catch (Exception exp)
@@ -193,7 +193,7 @@ public partial class BarGraph : System.Web.UI.Page
             LoggingEvent logObj = new LoggingEvent();
             logObj.EventID = "My Consumption Page Day Consumption";
             logObj.UserID = username;
-            bool sts = LG.LogEvent(logObj);
+            bool sts = LG.LogEventHostel(logObj);
 
         }
         catch (Exception exp)
@@ -219,7 +219,7 @@ public partial class BarGraph : System.Web.UI.Page
             LoggingEvent logObj = new LoggingEvent();
             logObj.EventID = "My Consumption Page Week Consumption";
             logObj.UserID = username;
-            bool sts = LG.LogEvent(logObj);
+            bool sts = LG.LogEventHostel(logObj);
 
         }
         catch (Exception exp)

@@ -51,7 +51,7 @@ public partial class Contact_Us : System.Web.UI.Page
                     LoggingEvent logObj = new LoggingEvent();
                     logObj.EventID = "Hostel Contact Us Page";
                     logObj.UserID = username;
-                    bool sts = LG.LogEvent(logObj);
+                    bool sts = LG.LogEventHostel(logObj);
 
                 }
                 catch (Exception exp)

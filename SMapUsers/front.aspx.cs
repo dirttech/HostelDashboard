@@ -61,7 +61,7 @@ public partial class Users_front : System.Web.UI.Page
                         LoggingEvent logObj = new LoggingEvent();
                         logObj.EventID = "Hostel Home Page";
                         logObj.UserID = grpMap.GroupId;
-                        bool sts = LG.LogEvent(logObj);
+                        bool sts = LG.LogEventHostel(logObj);
 
                     }
                     catch (Exception exp)
