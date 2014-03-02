@@ -122,12 +122,15 @@ public partial class Users_front : System.Web.UI.Page
             
             double avgValue = 0;
             int meterCount = 0;
-            MeterMapping allMeters = Group_Mapping.ListAllMeters(building);
-            FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), building, allMeters.MeterId, out avgTimeArray1, out avgEnergyArray1);
-            for (int i = 0; i < avgTimeArray1.Length; i++)
+            List<GroupMapping> allMeters = Group_Mapping.ListAllGroups();
+            for (int j = 0; j < allMeters.Count; j++)
             {
-                meterCount++;
-                avgValue = avgValue + avgEnergyArray1[i];
+                FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), allMeters[j].Building, allMeters[j].Meters.MeterId, out avgTimeArray1, out avgEnergyArray1);
+                for (int i = 0; i < avgTimeArray1.Length; i++)
+                {
+                    meterCount++;
+                    avgValue = avgValue + avgEnergyArray1[i];
+                }
             }
             avgValue = avgValue / (meterCount / 2);
 

@@ -125,6 +125,9 @@ box-shadow: 0px 0px 8px 0px #000000;
                 marginRight: 130,
                 marginBottom: 50
             },
+            credits:{
+                enabled:false
+            },
             title: {
                 text: 'Energy Consumption Comparisons',
                 x: -20 //center
@@ -155,7 +158,7 @@ box-shadow: 0px 0px 8px 0px #000000;
             legend: {
                 layout: 'vertical',
                 align: 'right',
-               
+                enabled:false,
                 verticalAlign: 'top',
                 x: -10,
                 y: 100,

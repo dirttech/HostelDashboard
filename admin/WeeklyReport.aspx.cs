@@ -65,7 +65,7 @@ public partial class WeeklyReport : System.Web.UI.Page
                 elec_units.InnerHtml = "Electricity Consumption = <b>" + yourValue + "</b> kW-h";
                 elec_cost.InnerHtml = "Cost Equivalent Consumption = <b>Rs " + yourValue * 10 + "</b>";
 
-                List<GroupMapping> allGroups = Group_Mapping.ListAllGroups(buildingSelect.SelectedValue);
+                List<GroupMapping> allGroups = Group_Mapping.ListHostelGroups(buildingSelect.SelectedValue);
 
                 groupNames = new string[1]; energyValues = new double[1]; timeValues = new string[1];
                 if (allGroups != null)
@@ -157,7 +157,7 @@ public partial class WeeklyReport : System.Web.UI.Page
     protected void generateSideBarItems()
     {
         sideBar.Controls.Clear();
-        List<GroupMapping> AllGroups = Group_Mapping.ListAllGroups(buildingSelect.SelectedValue);
+        List<GroupMapping> AllGroups = Group_Mapping.ListHostelGroups(buildingSelect.SelectedValue);
         if (AllGroups != null)
         {
             Table sideTable = new Table();

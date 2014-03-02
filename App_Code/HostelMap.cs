@@ -398,7 +398,7 @@ namespace App_Code.HostelMapping
 
         }
 
-        public static List<GroupMapping> ListAllGroups(string building)
+        public static List<GroupMapping> ListHostelGroups(string building)
         {
             List<GroupMapping> allGroups = new List<GroupMapping>();
 
@@ -478,7 +478,85 @@ namespace App_Code.HostelMapping
 
         }
 
-        public static MeterMapping ListAllMeters(string building)
+        public static List<GroupMapping> ListAllGroups()
+        {
+            List<GroupMapping> allGroups = new List<GroupMapping>();
+
+            try
+            {
+                using (DbConnection conn = provider.CreateConnection())
+                {
+                    conn.ConnectionString = connString;
+
+                    using (DbCommand cmd = conn.CreateCommand())
+                    {
+                        string sqlQuery = "SELECT group_id,building,rooms,student_number,group_name" +
+                                         " FROM group_address_mapping";
+
+                        if (parmPrefix != "@")
+                        {
+                            sqlQuery = sqlQuery.Replace("@", parmPrefix);
+                        }
+                        cmd.CommandText = sqlQuery;
+                        cmd.CommandType = CommandType.Text;
+
+                      
+                        conn.Open();
+
+                        using (DbDataReader rdr = cmd.ExecuteReader())
+                        {
+                            if (rdr.HasRows)
+                            {
+                                while (rdr.Read())
+                                {
+                                    GroupMapping grpMap = new GroupMapping();
+                                    if (!rdr.IsDBNull(0))
+                                    {
+                                        grpMap.GroupId = rdr.GetString(0);
+                                    }
+                                    if (!rdr.IsDBNull(1))
+                                    {
+                                        grpMap.Building = rdr.GetString(1);
+                                    }
+                                    if (grpMap.Building != null && grpMap.GroupId != null)
+                                    {
+                                        grpMap.Meters = MapMeter(grpMap.GroupId, grpMap.Building);
+                                        grpMap.Occupants = MapOccupants(grpMap.GroupId, grpMap.Building);
+                                    }
+                                    if (!rdr.IsDBNull(2))
+                                    {
+                                        grpMap.RoomNos = rdr.GetString(2);
+                                    }
+                                    if (!rdr.IsDBNull(3))
+                                    {
+                                        grpMap.OccupantCount = rdr.GetInt32(3);
+                                    }
+                                    if (!rdr.IsDBNull(4))
+                                    {
+                                        grpMap.GroupName = rdr.GetString(4);
+                                    }
+                                    allGroups.Add(grpMap);
+                                }
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception exp)
+            {
+                return null;
+            }
+            return allGroups;
+
+        }
+
+        public static MeterMapping ListAllMeters()
         {
             MeterMapping allMeters = new MeterMapping();
 
@@ -491,7 +569,7 @@ namespace App_Code.HostelMapping
                     using (DbCommand cmd = conn.CreateCommand())
                     {
                         string sqlQuery = "SELECT group_id, meter_id, building" +
-                                         " FROM group_meter_mapping WHERE building=@build";
+                                         " FROM group_meter_mapping";
 
                         if (parmPrefix != "@")
                         {
@@ -499,12 +577,6 @@ namespace App_Code.HostelMapping
                         }
                         cmd.CommandText = sqlQuery;
                         cmd.CommandType = CommandType.Text;
-
-                        DbParameter dpID = provider.CreateParameter();
-                        dpID.ParameterName = parmPrefix + "build";
-                        dpID.Value = building;
-                        cmd.Parameters.Add(dpID);
-
 
                         conn.Open();
 

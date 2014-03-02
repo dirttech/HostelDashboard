@@ -1,18 +1,15 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="BarGraph.aspx.cs" Inherits="BarGraph" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AverageComparisonOld.aspx.cs" Inherits="AverageComparisonOld" %>
 <%@ Import Namespace="System.Web.Script.Serialization" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
 
-<script type="text/javascript">
 
-</script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+ <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript" src="../Scripts/jquery.customSelect.js"></script>
-
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet" />
+   <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" media="screen" href="../Scripts/calender/bootstrap-datetimepicker.min.css" />
 <style type="text/css">
 
@@ -29,7 +26,7 @@ box-shadow: 0px 0px 8px 0px #000000;
  color:#1a9cc8;
  line-height:20px;
     }
-   .page_names
+     .page_names
         {
             color:#0091c2;
             font-size:large;
@@ -47,6 +44,10 @@ box-shadow: 0px 0px 8px 0px #000000;
         {
              text-decoration:none;
         }
+    .topButtons
+    {
+        vertical-align:middle;
+    }
     .topButtons>a
     {
         color:white;
@@ -80,6 +81,7 @@ box-shadow: 0px 0px 8px 0px #000000;
     {
         background-color:#0099CC;
         border-radius:5px;
+        vertical-align:middle;
     }
     .topper
     {
@@ -91,111 +93,103 @@ box-shadow: 0px 0px 8px 0px #000000;
         padding-left: 10px;
         font-family:cursive;
     }
-
 </style>
-<link rel="Stylesheet" type="text/css" media="screen" href="../Scripts/Default.css" />
 
-<link rel="shortcut icon" href="../images/dashboard_icon.png" />
-<script type="text/javascript">
-    jQuery(document).ready(function ($) {
-        $('#options').click(function () {
+    <title>My Comparison</title>
+    <link rel="Stylesheet" type="text/css" media="screen" href="../Scripts/Default.css" />
+    <link rel="shortcut icon" href="../images/dashboard_icon.png" />
+      
+   <script type="text/javascript">
+       jQuery(document).ready(function ($) {
+           $('#options').click(function () {
 
-            $('#optionsDiv').toggle("slow");
-        });
+               $('#optionsDiv').toggle("slow");
+           });
 
-        $('select.styled').customSelect();
-        /* -OR- set a custom class name for the stylable element */
-        //            $('.mySelectBoxClass').customSelect({ customClass: 'myOwnClassName' });
-    });
+           $('select.styled').customSelect();
+           /* -OR- set a custom class name for the stylable element */
+           //            $('.mySelectBoxClass').customSelect({ customClass: 'myOwnClassName' });
+       });
 </script>
- 
-    <title>Energy Consumption</title>
-    
     <script type="text/javascript">
-     var timeData = <%=new JavaScriptSerializer().Serialize(timeSeries)%>;
-     var energyData = <%=new JavaScriptSerializer().Serialize(energyArray)%>;  
-        var timeSeries=<%=new JavaScriptSerializer().Serialize(timeSeries) %>;
-        
-       var timeData1 = new Array;
-    for(var i=0;i<timeData.length;i++){
-    timeData1[i] = new Date(timeData[i]*1000);  
-    d=timeData1[i];
-    utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-      nd = new Date(utc + (3600000*5.5));
-      timeData1[i]=nd.toLocaleString();
    
-    }
+        var en=<%=new JavaScriptSerializer().Serialize(energyValues) %>;
+        var gr=<%=new JavaScriptSerializer().Serialize(groupNames) %>;
+   
+      jQuery(document).ready(function ($) {
+            
 
-
-        jQuery(document).ready(function ($) {
-            Highcharts.setOptions({
-	global: {
-		useUTC: false
-	}
-});
             $('#container').highcharts({
-                chart: {
-                    type: 'bar'
-                },
+            chart: {
+                type: 'bar',
+                marginRight: 130,
+                marginBottom: 50
+            },
+            title: {
+                text: 'Energy Consumption Comparisons',
+                x: -20 //center
+            },
+            subtitle: {
+                text: '',
+                x: -20
+            },
+            xAxis: {
+             
+               categories: gr
+               
+                   },
+            yAxis: {
                 title: {
-                    text: 'Energy Consumption'
-                },
-                subtitle: {
-                    text: ''
-                },
-                xAxis: {
-                     type: 'datetime',
-                     categories: timeSeries
-                
-                },
-                yAxis: {
                     
-                    title: {
-                        text: 'Energy(Kilo-Watt Hrs)',
-                        align: 'high'
-                    },
-                    labels: {
-                        overflow: 'justify'
-                    }
+                    text: 'Energy(Kilo-Watt Hrs)'
                 },
-                tooltip: {
-                    valueSuffix: ' KWhr'
-                },
-                legend:{
-                    enabled:false
-                },
-                plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                },
-                
-                credits: {
-                    enabled: false
-                },
-               series: [{
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                valueSuffix: 'KWHr'
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+               
+                verticalAlign: 'top',
+                x: -10,
+                y: 100,
+                borderWidth: 0
+            },
+             plotOptions: {                
+                bar: {
+                         dataLabels: {
+                             enabled: true
+                        }                     
+                 },
+                series: {
+                    stacking: $('#hiddenPlotType').attr('value')
+                }
+            },
+            series: [
+            {
                 name: 'Energy Consumption',
-                data: energyData
-            }]
-            });
+                data: en
+            }
+            
+            ]
         });
+    });
+   
+
     
     </script>
-
- 
-     
-  </head>
-
+</head>
 <body>
 <script src="../Scripts/high_charts/js/highcharts.js"></script>
-<script src="../Scripts/high_charts/js/modules/exporting.js"></script>
-     
-
+    <script src="../Scripts/high_charts/js/modules/exporting.js"></script>
     <form id="form1" runat="server">
-
-
+        
             <div id="timeDiv" runat="server" style=" display:none; position:absolute; left:550px; top:150px;-moz-border-radius:8px;	-webkit-border-radius:8px;	border-radius:8px; 
                            box-shadow: 0px 0px 10px rgba(0,0,0,0.2); width:500px; height:170px; background-color:#0d96c5; opacity:0.99; z-index:12;">
                         <img id="closeButton" runat="server" height="30" style="position:absolute; height:30px; top:5px; right:5px; cursor:pointer;" src="~/images/closeButton.png" alt="close" />
@@ -216,7 +210,7 @@ box-shadow: 0px 0px 8px 0px #000000;
                             <tr>
                                 <td>
                                     <div id="datetimepicker1" class="input-append date">
-                                        <input type="text" id="date1" runat="server" style=" margin-left:30px; height:20px;"/> 
+                                        <input type="text" id="date1" runat="server" style=" margin-left:30px;height:20px;"/> 
                                         <span class="add-on">
                                         </span>
                                     </div>       
@@ -274,35 +268,33 @@ box-shadow: 0px 0px 8px 0px #000000;
                         
              </div>
 
+     <div id="navigationTop">
+     <a href="front.aspx">Home</a>
+ 
+     <a href="BarGraph.aspx">My Consumption</a>
 
- <div id="navigationTop">
-     <a href="front.aspx">Home</a> <a href="BarGraph.aspx">My Consumption</a>
-
-      <a href="AverageComparison.aspx" >My Comparison</a>
-
+     <a href="AverageComparison.aspx" >My Comparison</a>
+         
     <a href="EnergySavingTips.aspx">Energy Tips</a>
      <a href="ContactUs.aspx" >Contact Us</a>
      </div>
-       <img src="../images/icons/option-icon.png" height="20px" style="height:20px;color:Black; font-weight:bold;  position:absolute; top:15px; right:20px; cursor:pointer;" id="options" />
+      <img src="../images/icons/option-icon.png" height="20px" style=" height:20px;color:Black; font-weight:bold;  position:absolute; top:15px; right:20px; cursor:pointer;" id="options" />
      <div style="position:absolute; right:15px; top:45px; background-color:White; width:150px; height:170px; z-index:10;" id="optionsDiv">
      <br /> 
-    
+ 
      <asp:LinkButton ID="logOut" runat="server"  
         
       style=" color:black;"  onclick="logOut_Click">LOG OUT</asp:LinkButton>
      
      <hr />
      </div>
-     <a style="color:Black;  font-size:large;  position:absolute; top:10px; left:20px;" id="nameTitle" runat="server">Welcome</a>
+     <a style="color:Black;  font-size:large;  position:absolute; top:10px; left:20px;" id="nameTitle" runat="server">Welcome</a>     
      
      <br />
-
-
-
-
-<div style="text-align:right; margin:0 auto; width:900px;" class="top-bar">
+    <div>
+   <div style="text-align:right;margin:0 auto;width:900px;" class="top-bar">
     <asp:Label runat="server" ID="messg" class="topper"></asp:Label>
-     <div style="vertical-align:middle;display:inline-block;margin-bottom:8px;">
+    <div style="vertical-align:middle;display:inline-block;margin-bottom:8px;">
     <span class="topButtons">
      <asp:LinkButton ID="LastTFHours" runat="server" OnClick="LastTFHours_Click"  class="topButtons-Selected">Last 24 Hours</asp:LinkButton>
    </span ><span class="topButtons">
@@ -310,7 +302,7 @@ box-shadow: 0px 0px 8px 0px #000000;
     </span><span class="topButtons">
     <asp:LinkButton ID="WeekConsumption" runat="server" OnClick="WeekConsumption_Click" OnClientClick="SelectDate() return false">Week Consumption</asp:LinkButton>
         </span>
-         </div>
+        </div>
     <asp:DropDownList ID="meterTypeList" runat="server" AutoPostBack="True" 
         class="styled" onselectedindexchanged="meterTypeList_SelectedIndexChanged">
         <asp:ListItem Value="1">Total Usage</asp:ListItem>
@@ -319,11 +311,11 @@ box-shadow: 0px 0px 8px 0px #000000;
    
 
 </div>
-
-   
-<div id="container" style="width: 900px; height: 600px; margin: 0 auto">
-         </div> 
     
+     <div id="container" style="width: 900px; height: 550px; margin: 0 auto"></div>
+  
+    </div>
+
 
     <script type="text/javascript"
      src="../Scripts/calender/jquery.min.js">
@@ -337,8 +329,7 @@ box-shadow: 0px 0px 8px 0px #000000;
     <script type="text/javascript"
      src="../Scripts/calender/bootstrap-datetimepicker.pt-BR.js">
     </script>
-  
-  
+   
              <script type="text/javascript">
                  jQuery(document).ready(function ($) {
                      $('#datetimepicker1').datetimepicker({
@@ -370,8 +361,8 @@ box-shadow: 0px 0px 8px 0px #000000;
                          $("#weekDiv").hide("drop");
                      });
                  });
-           </script>    
-
+           </script>   
+    
     </form>
 </body>
 </html>
