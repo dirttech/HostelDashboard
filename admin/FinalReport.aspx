@@ -227,12 +227,15 @@
                     <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                   </span>
                 </div>       
+
                 </td><td>
                     &nbsp;&nbsp;
-                <asp:DropDownList runat="server" class="customSelect" ID="buildingSelect" AutoPostBack="True" OnSelectedIndexChanged="buildingSelect_SelectedIndexChanged">
-                    <asp:ListItem>Girls Hostel</asp:ListItem>
-                    <asp:ListItem>Boys Hostel</asp:ListItem>                   
-                </asp:DropDownList>    
+              <div id="datetimepicker2" class="input-append date">
+                  <input type="text" id="toDated" runat="server" style=" margin-left:30px;height:20px;"/>
+                  <span class="add-on">
+                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                  </span>
+                </div>       
                 
                 </td>  
     <td><input type="button" id="prnt" onclick="printDiv('reportBody');" value="Print" class="customButton" style="margin-top:-4px;margin-left:10px;" /></td>
@@ -320,7 +323,11 @@
             $('#datetimepicker1').datetimepicker({
                 format: 'dd/MM/yyyy hh:mm:ss',
                 pick12HourFormat: true
-            });         
+            });   
+            $('#datetimepicker2').datetimepicker({
+                format: 'dd/MM/yyyy hh:mm:ss',
+                pick12HourFormat: true
+            });   
 
             $('.clicker').hover(function () {
                 $('.clicker').css('font-size', 'large');

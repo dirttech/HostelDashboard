@@ -64,7 +64,7 @@ public partial class FinalReport : System.Web.UI.Page
     protected void generateSideBarItems()
     {
         sideBar.Controls.Clear();
-        List<GroupMapping> AllGroups = Group_Mapping.ListHostelGroups(buildingSelect.SelectedValue);
+        List<GroupMapping> AllGroups = Group_Mapping.ListAllGroups();
         if (AllGroups != null)
         {
             Table sideTable = new Table();
@@ -117,7 +117,9 @@ public partial class FinalReport : System.Web.UI.Page
             DateTime sampleDate = DateTime.ParseExact(fromDate.Value + ",000", "dd/MM/yyyy HH:mm:ss,fff",
                                                  System.Globalization.CultureInfo.InvariantCulture);
             DateTime frDate = new DateTime(sampleDate.Year, sampleDate.Month, sampleDate.Day, 0, 0, 1);
-            DateTime toDate = new DateTime(sampleDate.Year, sampleDate.Month, sampleDate.Day, 23, 59, 59);
+            DateTime sampleDate2 = DateTime.ParseExact(toDated.Value + ",000", "dd/MM/yyyy HH:mm:ss,fff",
+                                                System.Globalization.CultureInfo.InvariantCulture);
+            DateTime toDate = new DateTime(sampleDate2.Year, sampleDate2.Month, sampleDate2.Day, 23, 59, 59);
             calculatePrint(frDate, toDate);
         }
         catch (Exception exp)
