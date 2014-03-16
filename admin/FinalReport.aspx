@@ -28,7 +28,7 @@
    
           var en=<%=new JavaScriptSerializer().Serialize(energyValues) %>;
           var gr=<%=new JavaScriptSerializer().Serialize(groupNames) %>;
-   
+         
           jQuery(document).ready(function ($) {            
 
               $('#container').highcharts({

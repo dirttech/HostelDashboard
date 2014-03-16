@@ -47,9 +47,12 @@ public partial class FinalReport : System.Web.UI.Page
                     if (allGroups[it] != null)
                     {
                         FetchEnergyDataS_Map.FetchAverageConsumption(fromdate.ToString("MM/dd/yyyy HH:mm"), todate.ToString("MM/dd/yyyy HH:mm"), allGroups[it].Building, allGroups[it].Meters.MeterId, out timeArray11, out energyArray11);
-                                              
+                                             
                         groupNames[it] = allGroups[it].GroupId;
-                        energyValues[it] = Math.Round(energyArray11[it] / 1000, 2);
+                        for (int en = 0; en < energyArray11.Length; en++)
+                        {
+                            energyValues[it] =energyValues[it]+ Math.Round(energyArray11[en] / 1000, 2);
+                        }
                     }
                 }
             }
