@@ -60,13 +60,53 @@ public partial class FinalReport : System.Web.UI.Page
         }
     }
 
-  
+    protected void generateSideBarItems()
+    {
+        sideBar.Controls.Clear();
+        List<GroupMapping> AllGroups = Group_Mapping.ListAllGroups();
+        if (AllGroups != null)
+        {
+            Table sideTable = new Table();
+            sideTable.ID = "sideTable";
+
+            for (int i = 0; i < AllGroups.Count; i++)
+            {
+
+                TableRow wrapper = new TableRow();
+                wrapper.ID = "wrapper" + i;
+
+                TableCell cell = new TableCell();
+                cell.ID = "cell" + i;
+                cell.Style.Add("width", "250px");
+                cell.Style.Add("height", "40px");
+                cell.Style.Add("border-bottom-style", "groove");
+
+                HtmlGenericControl nameLabel = new HtmlGenericControl("label");
+                nameLabel.ID = "nameLabel" + i;
+                nameLabel.InnerText = AllGroups[i].GroupId;
+                nameLabel.Style.Add("font-size", "large");
+                nameLabel.Attributes.Add("class", "clicker");
+                nameLabel.Attributes.Add("UID", AllGroups[i].GroupId);
+                nameLabel.Attributes.Add("Build", AllGroups[i].Building);
+                ListBox1.Items.Add(AllGroups[i].Building);
+                nameLabel.Attributes.Add("onclick", "JavaScript:CopyHidden(this)");
+
+                //cell.Controls.Add(check);
+                cell.Controls.Add(nameLabel);
+                wrapper.Cells.Add(cell);
+                sideTable.Rows.Add(wrapper);
+
+            }
+            sideBar.Controls.Add(sideTable);
+        }
+    }
 
     protected void Page_Load(object sender, EventArgs e)
     {
         //CheckLogin();
         UNameOfPrinter.InnerText = "";
-       
+        generateSideBarItems();
+
     }
 
     protected void printBill_Click(object sender, EventArgs e)
@@ -88,7 +128,7 @@ public partial class FinalReport : System.Web.UI.Page
     }
     protected void buildingSelect_SelectedIndexChanged(object sender, EventArgs e)
     {
-       
+        generateSideBarItems();
     }
     protected void prnt_ServerClick(object sender, EventArgs e)
     {
