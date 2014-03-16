@@ -238,7 +238,7 @@
                 </div>       
                 
                 </td>  
-    <td><input type="button" id="prnt" onclick="printDiv('reportBody');" value="Print" class="customButton" style="margin-top:-4px;margin-left:10px;" /></td>
+    <td><input type="button" id="prnt"  runat="server" onserverclick="prnt_ServerClick" value="Print" class="customButton" style="margin-top:-4px;margin-left:10px;" /></td>
             </tr></table>     
     </div>
     <div class="HeadingLeftTop" style="opacity:0.9; width:200px; position:absolute; right:300px;display:none; ">
