@@ -18,8 +18,8 @@ namespace App_Code.FetchingEnergySmap
     public static class FetchEnergyDataS_Map
     {
         static string uuid;
-        //static string sURL = "http://nms.iiitd.edu.in:9101/api/query";
-        static string sURL = "http://192.168.1.40:9101/api/query";
+        static string sURL = "http://nms.iiitd.edu.in:9101/api/query";
+        //static string sURL = "http://192.168.1.40:9101/api/query";
 
 
         public static void FetchHostelData(string fromtime, string toTime, string min_hour ,string width, string building, string criteria, List<int> meterIds, out Int32[] timeSt, out double[] values)

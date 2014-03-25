@@ -82,7 +82,7 @@ box-shadow: 0px 0px 8px 0px #000000;
      <a href="BarGraph.aspx">My Consumption</a>
 
      <a href="AverageComparison.aspx" >My Comparison</a>
-
+    <a href="Ranking.aspx">Group Rankings</a>
     <a href="EnergySavingTips.aspx">Energy Tips</a>
      <a href="ContactUs.aspx" >Contact Us</a>
      </div>
@@ -144,7 +144,7 @@ box-shadow: 0px 0px 8px 0px #000000;
      </td></tr>
     <tr><td style="vertical-align:top;">
      <div id="dashes" runat="server">
-         <asp:GridView ID="occupantList" runat="server" CellPadding="10" ForeColor="#333333" GridLines="None" Width="500" Font-Size="X-Large" Font-Names="verdana">
+         <asp:GridView ID="occupantList" runat="server" CellPadding="10" ForeColor="#333333" GridLines="None" Width="500" Font-Size="Large" Font-Names="verdana">
              <AlternatingRowStyle BackColor="White" />
              <EditRowStyle BackColor="#2461BF" />
              <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
@@ -159,8 +159,9 @@ box-shadow: 0px 0px 8px 0px #000000;
          </asp:GridView>
      </div>
      </td>
-     </tr></table>
-
+     </tr></table><br />
+         <center><footer style="font-family:Verdana;">Disclaimer: This study is being conducted for research purposes only.The information will not be meant for any personal use.For any queries,please contact : deepika1264@iiitd.ac.in</footer>
+</center>
     </form>
-</body>
+   </body>
 </html>

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AverageComparison.aspx.cs" Inherits="AverageComparison" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Ranking.aspx.cs" Inherits="Ranking" %>
 <%@ Import Namespace="System.Web.Script.Serialization" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -77,6 +77,11 @@ box-shadow: 0px 0px 8px 0px #000000;
         font-size: medium;
         border-radius: 5px;
     }
+    table
+    {
+        font-family:Verdana;
+        
+    }
     .top-bar
     {
         background-color:#0099CC;
@@ -95,7 +100,7 @@ box-shadow: 0px 0px 8px 0px #000000;
     }
 </style>
 
-    <title>My Comparison</title>
+    <title>Group Rankings</title>
     <link rel="Stylesheet" type="text/css" media="screen" href="../Scripts/Default.css" />
     <link rel="shortcut icon" href="../images/dashboard_icon.png" />
       
@@ -116,76 +121,7 @@ box-shadow: 0px 0px 8px 0px #000000;
         var en=<%=new JavaScriptSerializer().Serialize(energyValues) %>;
         var gr=<%=new JavaScriptSerializer().Serialize(groupNames) %>;
    
-      jQuery(document).ready(function ($) {
-            
-
-            $('#container').highcharts({
-            chart: {
-                type: 'bar',
-                marginRight: 130,
-                marginBottom: 50
-            },
-            credits:{
-                enabled:false
-            },
-            title: {
-                text: 'Energy Consumption Comparisons',
-                x: -20 //center
-            },
-            subtitle: {
-                text: '',
-                x: -20
-            },
-            xAxis: {
-             
-               categories: gr
-               
-                   },
-            yAxis: {
-                title: {
-                    
-                    text: 'Energy(Kilo-Watt Hrs)'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-            },
-            tooltip: {
-                valueSuffix: 'KWHr'
-            },
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                enabled:false,
-                verticalAlign: 'top',
-                x: -10,
-                y: 100,
-                borderWidth: 0
-            },
-             plotOptions: {                
-                bar: {
-                         dataLabels: {
-                             enabled: true
-                        }                     
-                 },
-                series: {
-                    stacking: $('#hiddenPlotType').attr('value')
-                }
-            },
-            series: [
-            {
-                name: 'Energy Consumption',
-                data: en
-            }
-            
-            ]
-        });
-    });
-   
-
-    
+      
     </script>
 </head>
 <body>
@@ -277,7 +213,7 @@ box-shadow: 0px 0px 8px 0px #000000;
      <a href="BarGraph.aspx">My Consumption</a>
 
      <a href="AverageComparison.aspx" >My Comparison</a>
-<a href="Ranking.aspx">Group Rankings</a>         
+         <a href="Ranking.aspx">Group Rankings</a>
     <a href="EnergySavingTips.aspx">Energy Tips</a>
      <a href="ContactUs.aspx" >Contact Us</a>
      </div>
@@ -308,14 +244,13 @@ box-shadow: 0px 0px 8px 0px #000000;
         </div>
     <asp:DropDownList ID="meterTypeList" runat="server" AutoPostBack="True" 
         class="styled" onselectedindexchanged="meterTypeList_SelectedIndexChanged">
-        <asp:ListItem Value="1">Total Usage</asp:ListItem>
-      
+       
     </asp:DropDownList>
    
 
-</div>
-    
-     <div id="container" style="width: 900px; height: 550px; margin: 0 auto"></div>
+</div><br />
+    <h3 style="width: 900px; margin: 0 auto">Group Rankings</h3>
+     <div id="container" style="width: 900px; height: 550px; margin: 0 auto" runat="server"></div>
   
     </div>
 

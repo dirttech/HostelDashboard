@@ -147,7 +147,7 @@ box-shadow: 0px 0px 8px 0px #000000;
      <a href="BarGraph.aspx">My Consumption</a>
 
      <a href="AverageComparison.aspx" >My Comparison</a>
-        
+        <a href="Ranking.aspx">Group Rankings</a>
     <a href="EnergySavingTips.aspx">Energy Tips</a>
      <a href="ContactUs.aspx" >Contact Us</a>
      </div>
