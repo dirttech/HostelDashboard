@@ -51,7 +51,15 @@ public partial class FinalReport : System.Web.UI.Page
                         groupNames[it] = allGroups[it].GroupId;
                         for (int en = 0; en < energyArray11.Length; en++)
                         {
-                            energyValues[it] =energyValues[it]+ Math.Round(energyArray11[en] / 1000, 2);
+                            energyValues[it] =energyValues[it]+ energyArray11[en] / 1000;
+                        }
+                        if (Convert.ToInt32(occupantList.SelectedValue) > 0)
+                        {
+                            energyValues[it] = Math.Round(energyValues[it] / allGroups[it].OccupantCount, 2);
+                        }
+                        else
+                        {
+                            energyValues[it] = Math.Round(energyValues[it], 2);
                         }
                     }
                 }

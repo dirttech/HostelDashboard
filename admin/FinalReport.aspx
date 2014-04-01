@@ -172,6 +172,7 @@
         }
         .calculations
         {
+            display:none;
              width:1000px;
              z-index:1; 
         }
@@ -229,16 +230,21 @@
                 </div>       
 
                 </td><td>
-                    &nbsp;&nbsp;
-              <div id="datetimepicker2" class="input-append date">
-                  <input type="text" id="toDated" runat="server" style=" margin-left:30px;height:20px;"/>
+              <div id="datetimepicker2" class="input-append date" style="margin-top: -2px;">
+                  <input type="text" id="toDated" runat="server" style=" margin-left:30px;height:20px;  left: 1px;"/>
                   <span class="add-on">
                     <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                   </span>
                 </div>       
                 
                 </td>  
-    <td><input type="button" id="prnt"  runat="server" onserverclick="prnt_ServerClick" value="Print" class="customButton" style="margin-top:-4px;margin-left:10px;" /></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;<asp:DropDownList ID="occupantList" runat="server" CssClass="customSelect">
+            <asp:ListItem Value="0">Total Consumption</asp:ListItem>
+            <asp:ListItem Value="1">Per Occupant</asp:ListItem>
+            </asp:DropDownList></td>
+    <td>
+      
+        <input type="button" id="prnt"  runat="server" onserverclick="prnt_ServerClick" value="Print" class="customButton" style="margin-top:-5px;margin-left:10px;" /></td>
             </tr></table>     
     </div>
     <div class="HeadingLeftTop" style="opacity:0.9; width:200px; position:absolute; right:300px;display:none; ">
@@ -280,16 +286,17 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <div id="container" style="width:800px;margin:0 auto;">
-
-                    </div>
+                    
                 </td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
             </tr>
-        </table>
+        </table><br />
+        <div id="container" style="width:800px;margin-left:50px;">
+
+                    </div>
     </div>
      
      <div id="printOptions" runat="server" style=" display:none; position:absolute; left:700px; top:120px;-moz-border-radius:8px;	-webkit-border-radius:8px;	
