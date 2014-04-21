@@ -46,8 +46,20 @@
               var timeSeries=<%=new JavaScriptSerializer().Serialize(names) %>;
      
               var en=<%=new JavaScriptSerializer().Serialize(prices) %>;
+
+              var colorOptions=['#000A00','#200200','#FAEBD7','#7FFFD4','#8A2BE2','#D2691E','#6495ED','#556B2F','#8FBC8F','#FF1493','#DAA520','#800080',];
+              var colors = [];
               //timeSeries = timeSeries.filter(function(e){return e});
-          
+              for(var i=0;i<timeSeries.length;i++)
+              {
+                  if(timeSeries[i]!=null)
+                  {
+                      for(var b=0;b<timeSeries[i].length;b++)
+                      {
+                          colors.push(colorOptions[i]);
+                      }
+                  }
+              }
               en = en.filter(function(e){return e});
           
               jQuery(document).ready(function ($) {
@@ -136,17 +148,15 @@
                           column:{
                               dataLabels: {
                                   enabled: true,
-                                  color:'#000000'
+                                  color:['#000000','#AAAAAA']
                               },
                               grouping: true,
                               groupPadding: 0,
-                              colorByPoint: true
+                              colorByPoint: true,
+                              colors:colors
                           }
                       },
-                      colors: [
-                            
-                                '#B5CA92'
-                      ],
+                     
                       credits:false,
                       series: [{
                           data: en[0].concat(en[1]).concat(en[2]).concat(en[3]).concat(en[4]).concat(en[5]).concat(en[6]).concat(en[7]).concat(en[8]).concat(en[9]).concat(en[10]).concat(en[11])
