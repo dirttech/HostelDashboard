@@ -229,8 +229,7 @@ public partial class UtilityPage : System.Web.UI.Page
                     else
                     {
                         a=a+1;
-                    }
-                    a = a + 1;                    
+                    }                    
                 }
             }
             if (names[0] != null)

@@ -57,6 +57,7 @@
                       for(var b=0;b<timeSeries[i].length;b++)
                       {
                           colors.push(colorOptions[i]);
+                          timeSeries[i][b] = timeSeries[i][b].slice(-4);
                       }
                   }
               }
