@@ -120,7 +120,7 @@ public partial class UtilityPage : System.Web.UI.Page
         try
         {
             string sUrl = "http://192.168.1.38:4999/HaryanaBijliVitranNigam?cust_no=" + cust_id;
-            sUrl = "http://localhost:5000/HaryanaBijliVitranNigam?cust_no=" + cust_id;
+            //sUrl = "http://localhost:5000/HaryanaBijliVitranNigam?cust_no=" + cust_id;
             HttpWebRequest req = WebRequest.Create(sUrl) as HttpWebRequest;
 
             req.Proxy = WebRequest.GetSystemWebProxy();
