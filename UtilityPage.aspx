@@ -70,7 +70,7 @@
                       chart: {
                           type: 'column',
                           marginRight: 30,
-                          marginBottom: 70,
+                          marginBottom: 50,
               
                       },
                       title: {
@@ -148,7 +148,7 @@
                          
                           column:{
                               dataLabels: {
-                                  enabled: true,
+                                  enabled: false,
                                   color:['#000000','#AAAAAA']
                               },
                               grouping: true,
@@ -302,7 +302,12 @@
     <div id="tableContainer" runat="server" class="tabclass"></div>
         <br />
         <hr /><br />
-        <span class="green-heading" style="float:left;padding-left:20px;">Previous Bills:</span><br />
+        <span class="green-heading" style="float:left;padding-left:20px;">Previous Bills:</span>
+        <asp:DropDownList id="PlotType" runat="server" style="float:right;margin-right:50px;" AutoPostBack="true" OnSelectedIndexChanged="PlotType_SelectedIndexChanged">
+            <asp:ListItem Selected="True" Value="consumption">Previous Consumption</asp:ListItem>
+            <asp:ListItem Value="bill">Previous Bill</asp:ListItem>
+        </asp:DropDownList>
+        <br />
     <div id="container_kwhr" class="chartclass" runat="server"></div>
     <br />
     </form>

@@ -18,7 +18,7 @@ public partial class UtilityPage : System.Web.UI.Page
     
     public List<string>[] names = new List<string>[12];
     public List<decimal>[] prices = new List<decimal>[12];
-    public string plottype="kwhr";
+    public static string plottype="kwhr";
 
     string[] allMonths = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
@@ -34,6 +34,10 @@ public partial class UtilityPage : System.Web.UI.Page
 
     }
     protected void find_cust_Click(object sender, EventArgs e)
+    {
+        Plotter();
+    }
+    protected void Plotter()
     {
         if (utilityList.SelectedValue == "bses_delhi")
         {
@@ -54,6 +58,7 @@ public partial class UtilityPage : System.Web.UI.Page
         {
             plottype = "rs";
             string sUrl = "http://192.168.1.38:4999/BSESDelhi?cust_no=" + cust_id;
+            
             HttpWebRequest req = WebRequest.Create(sUrl) as HttpWebRequest;
 
             req.Proxy = WebRequest.GetSystemWebProxy();
@@ -87,7 +92,7 @@ public partial class UtilityPage : System.Web.UI.Page
             var placeType = f1["Place Type"];
             var address = f1["Address"].ToString().ToLower();
             var circle = f1["Circle"].ToString().ToLower();
-            var readings = f1["Readings"];
+            var readings = f1["BillReadings"];
 
             string tableData = "Name: " + name + "#" + "Circle: " + circle + "#" + "Category: " + placeType + "#" + "Sanctioned Load: " + sanctionedLoad + "#" + "Address: " + address;
 
@@ -114,8 +119,8 @@ public partial class UtilityPage : System.Web.UI.Page
     {
         try
         {
-            plottype = "kwhr";
             string sUrl = "http://192.168.1.38:4999/HaryanaBijliVitranNigam?cust_no=" + cust_id;
+            sUrl = "http://localhost:5000/HaryanaBijliVitranNigam?cust_no=" + cust_id;
             HttpWebRequest req = WebRequest.Create(sUrl) as HttpWebRequest;
 
             req.Proxy = WebRequest.GetSystemWebProxy();
@@ -149,23 +154,38 @@ public partial class UtilityPage : System.Web.UI.Page
             var placeType = f1["PlaceType"].ToString().ToLower();
             var billCategory = f1["BillCategory"];
             var loadType = f1["Load Type"];
-            var readings = f1["Readings"];
+            var readings = f1["EnergyReadings"];
+            var bill_readings = f1["BillReadings"];
 
             string tableData = "Name: " + name + "#" + "City: " + city + "#" + "Category: " + placeType + "#" + "Sanctioned Load: " + sanctionedLoad + "#" + "Load Type: " + loadType + "#" + "Bill Category: " + billCategory;
 
             generateTable(tableData);
-
-            months = new string[readings.Length];
-            price = new decimal[readings.Length];
-
-            for (int i = 0; i < readings.Length; i++)
+            if (plottype == "kwhr")
             {
-                var f2 = readings[i];
-                months[i] = f2[0];
-                price[i] = f2[1];
-            }
+                months = new string[readings.Length];
+                price = new decimal[readings.Length];
 
-            clubMonths(months, price);
+                for (int i = 0; i < readings.Length; i++)
+                {
+                    var f2 = readings[i];
+                    months[i] = f2[0];
+                    price[i] = f2[1];
+                }
+                clubMonths(months, price);
+            }
+            else
+            {
+                months = new string[bill_readings.Length];
+                price = new decimal[bill_readings.Length];
+
+                for (int i = 0; i < bill_readings.Length; i++)
+                {
+                    var f2 = bill_readings[i];
+                    months[i] = f2[0];
+                    price[i] = f2[1];
+                }
+
+            }
             //months = sortedPairs.Select(x => x.Value).ToArray();
             //r price = sortedPairs.Select(x => x.Keys).ToArray();
         }
@@ -247,5 +267,17 @@ public partial class UtilityPage : System.Web.UI.Page
         }
        
     }
-  
+
+    protected void PlotType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (PlotType.SelectedValue == "consumption")
+        {
+            plottype = "kwhr";
+        }
+        else
+        {
+            plottype = "rs";
+        }
+        Plotter();
+    }
 }
