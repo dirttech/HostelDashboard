@@ -6,7 +6,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <link rel="shortcut icon" href="images/zenatix_logo_title.png" type="image/x-icon">
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <style type="text/css">
+       
+         body
+        {
+           margin:8px;
+        }
+        table
+        {
+            border-spacing: 2px;
+            border-collapse: initial;
+        }
+        footer
+        {
+            -webkit-box-sizing: initial;
+        }
         .upperboard
         {
             padding-left:15px;
@@ -287,26 +306,32 @@
          
         <div class="upperboard">
             <span class="blue-heading" style="">Plot Your Bill Details</span><br />
-        <asp:DropDownList ID="utilityList" runat="server" class="custom-textbox" Height="29px">
+        <asp:DropDownList ID="utilityList" runat="server" class="custom-textbox" Height="29px" AutoPostBack="True" OnSelectedIndexChanged="utilityList_SelectedIndexChanged">
             <asp:ListItem Selected="True" Value="none">Select Utility</asp:ListItem>
             <asp:ListItem Value="bses_delhi">BSES Delhi</asp:ListItem>
             <asp:ListItem Value="hbvn">Haryana Bijli Vitran Nigam</asp:ListItem>
+            <asp:ListItem Value="spanco">SPANCO Nagpur</asp:ListItem>
+            <asp:ListItem Value="tangedco">TANGEDCO TamilNadu</asp:ListItem>
             </asp:DropDownList>
-        <asp:TextBox ID="cust_no" runat="server" class="custom-textbox" placeholder="  Enter Customer ID"></asp:TextBox>
-&nbsp;&nbsp;
+            <asp:DropDownList ID="locality" runat="server" class="custom-textbox" style="height:29px" Visible="false">
+        
+            </asp:DropDownList>
+        <asp:TextBox ID="cust_no" runat="server" class="custom-textbox" style="height:29px" placeholder="  Enter Customer ID"></asp:TextBox>
+
+            &nbsp;&nbsp;
         <asp:Button ID="find_cust" runat="server" OnClick="find_cust_Click" Text="Find" class="custom-button" style="float:none;" />
        <br />
         </div>
         <br /> <hr /><br />
-        <span class="green-heading" style="float:left;padding-left:20px;">Your Details:</span><br />
+        <span class="green-heading" style="float:left;padding-left:20px;">Your Details: </span><br />
     <div id="tableContainer" runat="server" class="tabclass"></div>
         <br />
         <hr /><br />
-        <span class="green-heading" style="float:left;padding-left:20px;">Previous Bills:</span>
-        <asp:DropDownList id="PlotType" runat="server" style="float:right;margin-right:50px;" AutoPostBack="true" OnSelectedIndexChanged="PlotType_SelectedIndexChanged">
-            <asp:ListItem Selected="True" Value="consumption">Previous Consumption</asp:ListItem>
-            <asp:ListItem Value="bill">Previous Bill</asp:ListItem>
-        </asp:DropDownList>
+        <div class="btn-group" style="float:left;padding-left:20px;">
+            
+            <asp:Button runat="server" ID="prev_bill" class="btn btn-default" Text="Previous Bill" OnClick="prev_bill_Click" />
+            <asp:Button runat="server" ID="prev_consum" class="btn btn-default" Text="Previous Consumption" OnClick="prev_consum_Click"/>
+        </div>
         <br />
     <div id="container_kwhr" class="chartclass" runat="server"></div>
     <br />
