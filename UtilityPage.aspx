@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
 <!-- Latest compiled and minified JavaScript -->
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <style type="text/css">
        
          body
@@ -311,6 +311,7 @@
             <asp:ListItem Value="bses_delhi">BSES Delhi</asp:ListItem>
             <asp:ListItem Value="hbvn">Haryana Bijli Vitran Nigam</asp:ListItem>
             <asp:ListItem Value="spanco">SPANCO Nagpur</asp:ListItem>
+            <asp:ListItem Value="best_mumbai">BEST Mumbai</asp:ListItem>
             <asp:ListItem Value="tangedco">TANGEDCO TamilNadu</asp:ListItem>
             </asp:DropDownList>
             <asp:DropDownList ID="locality" runat="server" class="custom-textbox" style="height:29px" Visible="false">

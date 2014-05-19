@@ -58,6 +58,10 @@ public partial class UtilityPage : System.Web.UI.Page
         {
             getTANGEDCO(cust_no.Text);
         }
+        else if (utilityList.SelectedValue == "best_mumbai")
+        {
+            getBESTPage(cust_no.Text);
+        }
         else
         {
 
@@ -266,6 +270,65 @@ public partial class UtilityPage : System.Web.UI.Page
         }
     }
 
+    private void getBESTPage(string cust_id)
+    {
+        try
+        {
+            plottype = "rs";
+            string sUrl = ip + "BestMumbai?cust_no=" + cust_id;
+
+            HttpWebRequest req = WebRequest.Create(sUrl) as HttpWebRequest;
+
+            req.Proxy = WebRequest.GetSystemWebProxy();
+            req.AllowAutoRedirect = true;
+            req.MaximumAutomaticRedirections = 2;
+
+            req.Method = "POST";
+            req.ContentType = "application/x-www-form-urlencoded";
+            string stringData = "";
+
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            byte[] data = encoding.GetBytes(stringData);
+
+            req.ContentLength = data.Length;
+
+            Stream os = req.GetRequestStream();
+            os.Write(data, 0, data.Length);
+            os.Close();
+
+            HttpWebResponse response = req.GetResponse() as HttpWebResponse;
+
+            Stream objStream = req.GetResponse().GetResponseStream();
+            StreamReader objReader = new StreamReader(objStream);
+            var jss = new JavaScriptSerializer();
+            string sline = objReader.ReadLine();
+            var f1 = jss.Deserialize<dynamic>(sline);
+
+            var name = f1["Name"].ToString().ToLower();
+            var address = f1["Address"].ToString().ToLower();
+            var readings = f1["BillReadings"];
+
+            string tableData = "Name: " + name + "#" + "Address: " + address;
+
+            generateTable(tableData);
+
+            months = new string[readings.Length];
+            price = new decimal[readings.Length];
+
+            for (int i = 0; i < readings.Length; i++)
+            {
+                var f2 = readings[i];
+                months[i] = f2[0];
+                months[i] = months[i].Remove(months[i].Length - 12);
+                price[i] = f2[1];
+            }
+        }
+        catch (Exception f)
+        {
+
+        }
+    }
+
     private void getSpancoNagpur(string cust_id, string local)
     {
         try
@@ -439,6 +502,10 @@ public partial class UtilityPage : System.Web.UI.Page
             locality.Visible = false;
         }
         else if (utilityList.SelectedValue == "spanco")
+        {
+            locality.Visible = false;
+        }
+        else if (utilityList.SelectedValue == "best_mumbai")
         {
             locality.Visible = false;
         }
