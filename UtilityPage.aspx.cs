@@ -33,7 +33,7 @@ public partial class UtilityPage : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        ip = "http://localhost:5000/";
+        //ip = "http://localhost:5000/";
 
     }
     protected void find_cust_Click(object sender, EventArgs e)
@@ -91,7 +91,7 @@ public partial class UtilityPage : System.Web.UI.Page
             os.Close();
 
             HttpWebResponse response = req.GetResponse() as HttpWebResponse;
-
+    
             Stream objStream = req.GetResponse().GetResponseStream();
             StreamReader objReader = new StreamReader(objStream);
             var jss = new JavaScriptSerializer();
