@@ -34,7 +34,7 @@ public partial class UtilityPage : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        //ip = "http://localhost:5000/";
+       //ip = "http://localhost:5000/";
 
     }
     protected void find_cust_Click(object sender, EventArgs e)
@@ -585,11 +585,11 @@ public partial class UtilityPage : System.Web.UI.Page
             else
             {
                 container_kwhr.Visible = false;
-                if (plotted == "rs")
+                if (plottype == "rs")
                 {
                     sorry.InnerHtml = "Bills not available. Try <b>Previous Consumption</b> option.";
                 }
-                else if (plotted == "kwhr")
+                else if (plottype == "kwhr")
                 {
                     sorry.InnerHtml = "Previous consumption not available. Try <b>Previous Bills</b> option.";
                 }
