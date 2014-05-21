@@ -57,7 +57,7 @@
     </style>
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     
-      <script type="text/javascript">
+`      <script type="text/javascript">
         
           var plottype = <%=new JavaScriptSerializer().Serialize(plottype) %>;
           if(plottype == "kwhr")
@@ -319,23 +319,30 @@
             </asp:DropDownList>
         <asp:TextBox ID="cust_no" runat="server" class="custom-textbox" style="height:29px" placeholder="  Enter Customer ID"></asp:TextBox>
 
-            &nbsp;&nbsp;
+            
         <asp:Button ID="find_cust" runat="server" OnClick="find_cust_Click" Text="Find" class="custom-button" style="float:none;" />
        <br />
         </div>
         <br /> <hr /><br />
+        <div id="wrongId" runat="server" class="alert alert-danger" visible="false" style="border-radius:0;">
+                <strong>Oh snap!</strong> Data not available. Please check your customer number.
+        </div>
+<span id="panelDown" runat="server" style="z-index:1;" visible="false">
         <span class="green-heading" style="float:left;padding-left:20px;">Your Details: </span><br />
     <div id="tableContainer" runat="server" class="tabclass"></div>
         <br />
         <hr /><br />
-        <div class="btn-group" style="float:left;padding-left:20px;">
-            
-            <asp:Button runat="server" ID="prev_bill" class="btn btn-default" Text="Previous Bill" OnClick="prev_bill_Click" />
+        <div class="btn-group" style="float:left;padding-left:20px;z-index:10;">            
             <asp:Button runat="server" ID="prev_consum" class="btn btn-default" Text="Previous Consumption" OnClick="prev_consum_Click"/>
+            <asp:Button runat="server" ID="prev_bill" class="btn btn-default" Text="Previous Bills" OnClick="prev_bill_Click" />          
         </div>
         <br />
-    <div id="container_kwhr" class="chartclass" runat="server"></div>
-    <br />
+        <div id="container_kwhr" class="chartclass" runat="server"></div><br />
+            <div id="sorry" runat="server" class="alert alert-danger" visible="false" style="border-radius:0;">
+                <strong>Oh snap!</strong> Data not available. Please try some other option.
+            </div>
+        <br />
+</span>
     </form>
      <footer>Copyright © 2014 Zenatix. All rights reserved.</footer>
 </body>

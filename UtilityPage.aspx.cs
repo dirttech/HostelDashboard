@@ -21,6 +21,7 @@ public partial class UtilityPage : System.Web.UI.Page
     public List<string>[] names = new List<string>[12];
     public List<decimal>[] prices = new List<decimal>[12];
     public static string plottype="kwhr";
+    public static string plotted = "";
 
     string[] allMonths = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
@@ -66,13 +67,13 @@ public partial class UtilityPage : System.Web.UI.Page
         {
 
         }
+        validateVisibility();
     }
 
     private void getBSESPage(string cust_id)
     {
         try
         {
-            plottype = "rs";
             string sUrl = ip+"BSESDelhi?cust_no=" + cust_id;
             
             HttpWebRequest req = WebRequest.Create(sUrl) as HttpWebRequest;
@@ -108,25 +109,33 @@ public partial class UtilityPage : System.Web.UI.Page
             var placeType = f1["Place Type"];
             var address = f1["Address"].ToString().ToLower();
             var circle = f1["Circle"].ToString().ToLower();
-            var readings = f1["BillReadings"];
 
             string tableData = "Name: " + name + "#" + "Circle: " + circle + "#" + "Category: " + placeType + "#" + "Sanctioned Load: " + sanctionedLoad + "#" + "Address: " + address;
-
             generateTable(tableData);
-
-            months = new string[readings.Length];
-            price = new decimal[readings.Length];
-
-            for (int i = 0; i < readings.Length; i++)
+            try
             {
-                var f2 = readings[i];
-                months[i] = f2[0];
-                price[i] = f2[1];
+                var readings = f1["BillReadings"];
+
+                months = new string[readings.Length];
+                price = new decimal[readings.Length];
+
+                for (int i = 0; i < readings.Length; i++)
+                {
+                    var f2 = readings[i];
+                    months[i] = f2[0];
+                    price[i] = f2[1];
+                }
+                plotted = "rs";
+            }
+            catch (Exception exp)
+            {
+
             }
         }
         catch (Exception f)
         {
-
+            panelDown.Visible = false;
+            wrongId.Visible = true;
         }
        
     }
@@ -169,36 +178,45 @@ public partial class UtilityPage : System.Web.UI.Page
             var placeType = f1["PlaceType"].ToString().ToLower();
             var billCategory = f1["BillCategory"];
             var loadType = f1["Load Type"];
-            var readings = f1["EnergyReadings"];
-            var bill_readings = f1["BillReadings"];
 
             string tableData = "Name: " + name + "#" + "City: " + city + "#" + "Category: " + placeType + "#" + "Sanctioned Load: " + sanctionedLoad + "#" + "Load Type: " + loadType + "#" + "Bill Category: " + billCategory;
-
             generateTable(tableData);
-            if (plottype == "kwhr")
+            try
             {
-                months = new string[readings.Length];
-                price = new decimal[readings.Length];
+                var readings = f1["EnergyReadings"];
+                var bill_readings = f1["BillReadings"];
 
-                for (int i = 0; i < readings.Length; i++)
+                
+                if (plottype == "kwhr")
                 {
-                    var f2 = readings[i];
-                    months[i] = f2[0];
-                    price[i] = f2[1];
+                    plotted = "kwhr";
+                    months = new string[readings.Length];
+                    price = new decimal[readings.Length];
+
+                    for (int i = 0; i < readings.Length; i++)
+                    {
+                        var f2 = readings[i];
+                        months[i] = f2[0];
+                        price[i] = f2[1];
+                    }
+                    clubMonths(months, price);
                 }
-                clubMonths(months, price);
+                else
+                {
+                    plotted = "rs";
+                    months = new string[bill_readings.Length];
+                    price = new decimal[bill_readings.Length];
+
+                    for (int i = 0; i < bill_readings.Length; i++)
+                    {
+                        var f2 = bill_readings[i];
+                        months[i] = f2[0];
+                        price[i] = f2[1];
+                    }
+                }
             }
-            else
+            catch (Exception exp)
             {
-                months = new string[bill_readings.Length];
-                price = new decimal[bill_readings.Length];
-
-                for (int i = 0; i < bill_readings.Length; i++)
-                {
-                    var f2 = bill_readings[i];
-                    months[i] = f2[0];
-                    price[i] = f2[1];
-                }
 
             }
             //months = sortedPairs.Select(x => x.Value).ToArray();
@@ -206,7 +224,8 @@ public partial class UtilityPage : System.Web.UI.Page
         }
         catch (Exception f)
         {
-
+            panelDown.Visible = false;
+            wrongId.Visible = true;
         }
 
     }
@@ -215,7 +234,6 @@ public partial class UtilityPage : System.Web.UI.Page
     {
         try
         {
-            plottype = "rs";
             string sUrl = ip+"TANGEDCO?cust_no=" + cust_id;
             
             HttpWebRequest req = WebRequest.Create(sUrl) as HttpWebRequest;
@@ -248,25 +266,33 @@ public partial class UtilityPage : System.Web.UI.Page
             var name = f1["Name"].ToString().ToLower();
             var address = f1["Address"].ToString().ToLower();
             var circle = f1["Circle"].ToString().ToLower();
-            var readings = f1["BillReadings"];
 
             string tableData = "Name: " + name + "#" + "Circle: " + circle + "#" + "Address: " + address;
-
             generateTable(tableData);
-
-            months = new string[readings.Length];
-            price = new decimal[readings.Length];
-
-            for (int i = 0; i < readings.Length; i++)
+            try
             {
-                var f2 = readings[i];
-                months[i] = f2[0];
-                price[i] = f2[1];
+                var readings = f1["BillReadings"];
+
+                months = new string[readings.Length];
+                price = new decimal[readings.Length];
+
+                for (int i = 0; i < readings.Length; i++)
+                {
+                    var f2 = readings[i];
+                    months[i] = f2[0];
+                    price[i] = f2[1];
+                }
+                plotted = "rs";
+            }
+            catch (Exception exp)
+            {
+
             }
         }
         catch (Exception f)
         {
-
+            panelDown.Visible = false;
+            wrongId.Visible = true;
         }
     }
 
@@ -274,7 +300,6 @@ public partial class UtilityPage : System.Web.UI.Page
     {
         try
         {
-            plottype = "rs";
             string sUrl = ip + "BestMumbai?cust_no=" + cust_id;
 
             HttpWebRequest req = WebRequest.Create(sUrl) as HttpWebRequest;
@@ -306,26 +331,33 @@ public partial class UtilityPage : System.Web.UI.Page
 
             var name = f1["Name"].ToString().ToLower();
             var address = f1["Address"].ToString().ToLower();
-            var readings = f1["BillReadings"];
-
             string tableData = "Name: " + name + "#" + "Address: " + address;
-
             generateTable(tableData);
-
-            months = new string[readings.Length];
-            price = new decimal[readings.Length];
-
-            for (int i = 0; i < readings.Length; i++)
+            try
             {
-                var f2 = readings[i];
-                months[i] = f2[0];
-                months[i] = months[i].Remove(months[i].Length - 12);
-                price[i] = f2[1];
+                var readings = f1["BillReadings"];
+
+                months = new string[readings.Length];
+                price = new decimal[readings.Length];
+
+                for (int i = 0; i < readings.Length; i++)
+                {
+                    var f2 = readings[i];
+                    months[i] = f2[0];
+                    months[i] = months[i].Remove(months[i].Length - 12);
+                    price[i] = f2[1];
+                }
+                plotted = "rs";
+            }
+            catch (Exception exp)
+            {
+
             }
         }
         catch (Exception f)
         {
-
+            panelDown.Visible = false;
+            wrongId.Visible = true;
         }
     }
 
@@ -333,7 +365,6 @@ public partial class UtilityPage : System.Web.UI.Page
     {
         try
         {
-            plottype = "kwhr";
             string sUrl = ip + "SpancoNagpur?cust_no=" + cust_id+"&locality="+local;
 
             HttpWebRequest req = WebRequest.Create(sUrl) as HttpWebRequest;
@@ -367,26 +398,34 @@ public partial class UtilityPage : System.Web.UI.Page
             var address = f1["Address"].ToString().ToLower();
             var loadSanctioned = f1["Sanctioned Load"].ToString().ToLower();
             var category = f1["Place Type"].ToString().ToLower();
-            var readings = f1["EnergyReadings"];
 
-            string tableData = "Name: " + name + "#" + "Sanctioned Load: " + loadSanctioned + "#" + "Address: " + address+"#"+"Category: "+category;
-
+            string tableData = "Name: " + name + "#" + "Sanctioned Load: " + loadSanctioned + "#" + "Address: " + address + "#" + "Category: " + category;
             generateTable(tableData);
-
-            months = new string[readings.Length];
-            price = new decimal[readings.Length];
-
-            for (int i = 0; i < readings.Length; i++)
+            try
             {
-                var f2 = readings[i];
-                months[i] = f2[0];
-                price[i] = f2[1];
+                plotted = "kwhr";
+                var readings = f1["EnergyReadings"];
+
+                months = new string[readings.Length];
+                price = new decimal[readings.Length];
+
+                for (int i = 0; i < readings.Length; i++)
+                {
+                    var f2 = readings[i];
+                    months[i] = f2[0];
+                    price[i] = f2[1];
+                }
+                clubMonths(months, price);
             }
-            clubMonths(months, price);
+            catch (Exception exp)
+            {
+
+            }
         }
         catch (Exception f)
         {
-
+            panelDown.Visible = false;
+            wrongId.Visible = true;
         }
     }
 
@@ -394,11 +433,13 @@ public partial class UtilityPage : System.Web.UI.Page
     {
         if (tableData != null)
         {
+            panelDown.Visible = true;
+            wrongId.Visible = false;
             var data = tableData.Split('#').ToArray();
             int len = data.Length;
 
             HtmlTable tab = new HtmlTable();
-            for (int i = 0; i < len; i=i+2)
+            for (int i = 0; i < len; i = i + 2)
             {
                 HtmlTableRow row = new HtmlTableRow();
 
@@ -415,6 +456,11 @@ public partial class UtilityPage : System.Web.UI.Page
                 tab.Rows.Add(row);
             }
             tableContainer.Controls.Add(tab);
+        }
+        else
+        {
+            panelDown.Visible = false;
+            wrongId.Visible = true;
         }
     }
 
@@ -517,6 +563,42 @@ public partial class UtilityPage : System.Web.UI.Page
         else
         {
             locality.Visible = false;
+        }
+        panelDown.Visible = false;
+        wrongId.Visible = false;
+    }
+
+    protected void validateVisibility()
+    {
+        if (months==null)
+        {
+            container_kwhr.Visible = false;
+            sorry.Visible = true;
+        }
+        else
+        {
+            if (plottype == plotted)
+            {
+                container_kwhr.Visible = true;
+                sorry.Visible = false;
+            }
+            else
+            {
+                container_kwhr.Visible = false;
+                if (plotted == "rs")
+                {
+                    sorry.InnerHtml = "Bills not available. Try <b>Previous Consumption</b> option.";
+                }
+                else if (plotted == "kwhr")
+                {
+                    sorry.InnerHtml = "Previous consumption not available. Try <b>Previous Bills</b> option.";
+                }
+                else
+                {
+                    sorry.InnerHtml = "<strong>Oh snap!</strong> Data not available. Please try some other option.";
+                }
+                sorry.Visible = true;
+            }
         }
     }
 }
