@@ -316,7 +316,7 @@
             <asp:ListItem Value="tangedco">TANGEDCO TamilNadu</asp:ListItem>
             </asp:DropDownList>
             <select id="mahavitranList" runat="server" class="custom-textbox" style="height:29px" Visible="false">
-                    <option value="0000">Select Locality</option>
+                    <option value="0000" selected="selected">Select Locality</option>
                     <option value="0019">0019 VASAI RD. URBAN S/DN</option>
 	                <option value="0027">0027 VASAI RD. EAST S/DN.</option>
 	                <option value="0035">0035 NALASOPARA WEST S/DN</option>
