@@ -63,6 +63,10 @@ public partial class UtilityPage : System.Web.UI.Page
         {
             getBESTPage(cust_no.Text);
         }
+        else if (utilityList.SelectedValue == "mahavitran")
+        {
+            getMahavitranPage(cust_no.Text, mahavitranList.Value);
+        }
         else
         {
 
@@ -429,6 +433,91 @@ public partial class UtilityPage : System.Web.UI.Page
         }
     }
 
+    private void getMahavitranPage(string cust_id, string local)
+    {
+        try
+        {
+            string sUrl = ip + "MahaVitran?cust_no=" + cust_id + "&locality=" +local;
+            HttpWebRequest req = WebRequest.Create(sUrl) as HttpWebRequest;
+
+            req.Proxy = WebRequest.GetSystemWebProxy();
+            req.AllowAutoRedirect = true;
+            req.MaximumAutomaticRedirections = 2;
+
+            req.Method = "POST";
+            req.ContentType = "application/x-www-form-urlencoded";
+            string stringData = "";
+
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            byte[] data = encoding.GetBytes(stringData);
+
+            req.ContentLength = data.Length;
+
+            Stream os = req.GetRequestStream();
+            os.Write(data, 0, data.Length);
+            os.Close();
+
+            HttpWebResponse response = req.GetResponse() as HttpWebResponse;
+
+            Stream objStream = req.GetResponse().GetResponseStream();
+            StreamReader objReader = new StreamReader(objStream);
+            var jss = new JavaScriptSerializer();
+            string sline = objReader.ReadLine();
+            var f1 = jss.Deserialize<dynamic>(sline);
+
+            var name = f1["Name"].ToString().ToLower();
+            var address = f1["Address"].ToString().ToLower();
+            
+
+            string tableData = "Name: " + name + "#" + "Address: " + address;
+            generateTable(tableData);
+            try
+            {
+                var readings = f1["EnergyReadings"];
+                var bill_readings = f1["BillReadings"];
+
+
+                if (plottype == "kwhr")
+                {
+                    plotted = "kwhr";
+                    months = new string[readings.Length];
+                    price = new decimal[readings.Length];
+
+                    for (int i = 0; i < readings.Length; i++)
+                    {
+                        var f2 = readings[i];
+                        months[i] = f2[0];
+                        price[i] = f2[1];
+                    }
+                    clubMonths(months, price);
+                }
+                else
+                {
+                    plotted = "rs";
+                    months = new string[bill_readings.Length];
+                    price = new decimal[bill_readings.Length];
+
+                    for (int i = 0; i < bill_readings.Length; i++)
+                    {
+                        var f2 = bill_readings[i];
+                        months[i] = f2[0];
+                        price[i] = f2[1];
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+
+            }
+        }
+        catch (Exception f)
+        {
+            panelDown.Visible = false;
+            wrongId.Visible = true;
+        }
+
+    }
+
     private void generateTable(string tableData)
     {
         if (tableData != null)
@@ -542,27 +631,38 @@ public partial class UtilityPage : System.Web.UI.Page
         if (utilityList.SelectedValue == "bses_delhi")
         {
             locality.Visible = false;
+            mahavitranList.Visible = false;    
         }
         else if (utilityList.SelectedValue == "hbvn")
         {
             locality.Visible = false;
+            mahavitranList.Visible = false;    
         }
         else if (utilityList.SelectedValue == "spanco")
         {
             locality.Visible = false;
+            mahavitranList.Visible = false;    
         }
         else if (utilityList.SelectedValue == "best_mumbai")
         {
             locality.Visible = false;
+            mahavitranList.Visible = false;    
         }
         else if (utilityList.SelectedValue == "tangedco")
         {
             locality.Visible = true;
+            mahavitranList.Visible = false;     
             fillTANGEDCO();
+        }
+        else if (utilityList.SelectedValue == "mahavitran")
+        {
+            locality.Visible = false;
+            mahavitranList.Visible = true;           
         }
         else
         {
             locality.Visible = false;
+            mahavitranList.Visible = false;    
         }
         panelDown.Visible = false;
         wrongId.Visible = false;
