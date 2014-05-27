@@ -34,7 +34,7 @@ public partial class UtilityPage : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-       ip = "http://localhost:5000/";
+       //ip = "http://localhost:5000/";
 
     }
     protected void find_cust_Click(object sender, EventArgs e)
