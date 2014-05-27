@@ -34,7 +34,7 @@ public partial class UtilityPage : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-       //ip = "http://localhost:5000/";
+       ip = "http://localhost:5000/";
 
     }
     protected void find_cust_Click(object sender, EventArgs e)
@@ -57,7 +57,7 @@ public partial class UtilityPage : System.Web.UI.Page
         }
         else if (utilityList.SelectedValue == "tangedco")
         {
-            getTANGEDCO(cust_no.Text);
+            getTANGEDCO(cust_no.Text, locality.SelectedValue);
         }
         else if (utilityList.SelectedValue == "best_mumbai")
         {
@@ -234,11 +234,11 @@ public partial class UtilityPage : System.Web.UI.Page
 
     }
 
-    private void getTANGEDCO(string cust_id)
+    private void getTANGEDCO(string cust_id, string local)
     {
         try
         {
-            string sUrl = ip+"TANGEDCO?cust_no=" + cust_id;
+            string sUrl = ip+"TANGEDCO?cust_no=" + cust_id+"&locality="+local;
             
             HttpWebRequest req = WebRequest.Create(sUrl) as HttpWebRequest;
 
