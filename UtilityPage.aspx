@@ -23,6 +23,7 @@
         }
          body
         {
+             background-color:#4e5d6c !important;
         }
         table
         {
