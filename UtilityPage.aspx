@@ -5,17 +5,24 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <link rel="shortcut icon" href="images/zenatix_logo_title.png" type="image/x-icon">
-    <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="shortcut icon" href="images/zenatix_logo_title.png" type="image/x-icon">
 
-<!-- Latest compiled and minified JavaScript -->
+<script src="Scripts/jquery-1.4.1.min.js"></script>
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <style type="text/css">
-       
+        .top-row
+        {
+            visibility:hidden;
+            height:0px;
+            display:none;
+        }
+        footer
+        {
+            visibility:hidden;
+        }
          body
         {
-           margin:8px;
         }
         table
         {
@@ -36,18 +43,17 @@
         {
             text-transform:capitalize;
             font-family:Arial;
-            width:930px;
+            width:100%;
             text-align:left;
-            padding-left:40px;
         }
             .tabclass > table
             {
-                width:900px;
+                width:100%;
                 padding-left:20px;
             }
         .chartclass
         {
-            width:930px;
+            width:95%;
             height:100%;
         }
         td
@@ -279,7 +285,7 @@
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/2.2.4/modules/exporting.js"></script>
     <script src="scripts/grouped-categories.js"></script>
-    <form id="form1" runat="server" class="body">
+    <form id="form1" runat="server" class="container" style="background-color:white;">
            <table class="top-row">
             <tr>
                 <td rowspan="2">
@@ -302,7 +308,6 @@
                 </td>
             </tr>
         </table>
-        <hr />
          
         <div class="upperboard">
             <span class="blue-heading" style="">Plot Your Bill Details</span><br />
@@ -1189,7 +1194,7 @@
         <asp:TextBox ID="cust_no" runat="server" class="custom-textbox" style="height:29px" placeholder="  Enter Customer ID"></asp:TextBox>
 
             
-        <asp:Button ID="find_cust" runat="server" OnClick="find_cust_Click" Text="Find" class="custom-button" style="float:none;" />
+        <asp:Button ID="find_cust" runat="server" OnClick="find_cust_Click" Text="Find" class="btn btn-info" style="float:none;border-radius:0px;height:28px;width:75px;padding-top:3px;margin-top:-2px;font-weight:bolder;" />
        <br />
         </div>
         <br /> <hr /><br />
