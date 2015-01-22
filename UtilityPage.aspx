@@ -309,7 +309,7 @@
                 </td>
             </tr>
         </table>
-         
+         <br />
         <div class="upperboard">
             <!--<span class="blue-heading" style="">Plot Your Bill Details</span><br />-->
         <asp:DropDownList ID="utilityList" runat="server" class="custom-textbox" Height="29px" AutoPostBack="True" OnSelectedIndexChanged="utilityList_SelectedIndexChanged">
