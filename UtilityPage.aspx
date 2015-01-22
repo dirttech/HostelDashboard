@@ -6,8 +6,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <link rel="shortcut icon" href="images/zenatix_logo_title.png" type="image/x-icon">
-
-<script src="Scripts/jquery-1.4.1.min.js"></script>
+    
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <style type="text/css">
@@ -23,7 +23,8 @@
         }
          body
         {
-             background-color:#4e5d6c !important;            
+             background-color:#4e5d6c !important;           
+              
         }
         .bdy
         {
@@ -67,7 +68,6 @@
             width:400px;
         }
     </style>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     
 `      <script type="text/javascript">
         
@@ -316,7 +316,7 @@
         </table>
          <br />
         <div class="upperboard">
-            <!--<span class="blue-heading" style="">Plot Your Bill Details</span><br />-->
+            <span class="blue-heading" style="">Write Details</span>
         <asp:DropDownList ID="utilityList" runat="server" class="custom-textbox" Height="29px" AutoPostBack="True" OnSelectedIndexChanged="utilityList_SelectedIndexChanged">
             <asp:ListItem Selected="True" Value="none">Select Utility</asp:ListItem>
             <asp:ListItem Value="bses_delhi">BSES Delhi</asp:ListItem>
@@ -1208,7 +1208,7 @@
                 <strong>Oh snap!</strong> Data not available. Please check your customer number.
         </div>
 <span id="panelDown" runat="server" style="z-index:1;" visible="false">
-        <span class="green-heading" style="float:left;padding-left:20px;">Your Details: </span><br />
+        <span class="blue-heading" style="float:left;padding-left:20px;">Your Details: </span><br />
     <div id="tableContainer" runat="server" class="tabclass"></div>
         <br />
         <hr /><br />
