@@ -23,7 +23,12 @@
         }
          body
         {
-             background-color:#4e5d6c !important;
+             background-color:#4e5d6c !important;            
+        }
+        .bdy
+        {
+             height:400px !important;
+             overflow:scroll;
         }
         table
         {
@@ -286,7 +291,7 @@
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/2.2.4/modules/exporting.js"></script>
     <script src="scripts/grouped-categories.js"></script>
-    <form id="form1" runat="server" class="container" style="background-color:white;">
+    <form id="form1" runat="server" class="container bdy" style="background-color:white;">
            <table class="top-row">
             <tr>
                 <td rowspan="2">
