@@ -310,7 +310,7 @@
         </table>
          
         <div class="upperboard">
-            <span class="blue-heading" style="">Plot Your Bill Details</span><br />
+            <!--<span class="blue-heading" style="">Plot Your Bill Details</span><br />-->
         <asp:DropDownList ID="utilityList" runat="server" class="custom-textbox" Height="29px" AutoPostBack="True" OnSelectedIndexChanged="utilityList_SelectedIndexChanged">
             <asp:ListItem Selected="True" Value="none">Select Utility</asp:ListItem>
             <asp:ListItem Value="bses_delhi">BSES Delhi</asp:ListItem>
