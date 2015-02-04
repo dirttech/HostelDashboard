@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="UtilityPage.aspx.cs" Inherits="UtilityPage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="UtilityPage.aspx.cs" EnableEventValidation="true" Inherits="UtilityPage" %>
 <%@ Import Namespace="System.Web.Script.Serialization" %>
 
 <!DOCTYPE html>
@@ -8,9 +8,23 @@
 <link rel="shortcut icon" href="images/zenatix_logo_title.png" type="image/x-icon">
     
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <style type="text/css">
+        .glyphicon.spinning {
+            -animation: spin 1s infinite linear;
+            -webkit-animation: spin2 1s infinite linear;
+        }
+
+        @-webkit-keyframes spin2 {
+            from { -webkit-transform: rotate(0deg);}
+            to { -webkit-transform: rotate(360deg);}
+        }
+
+        @keyframes spin {
+            from { transform: scale(1) rotate(0deg);}
+            to { transform: scale(1) rotate(360deg);}
+        }
         .top-row
         {
             visibility:hidden;
@@ -71,216 +85,220 @@
     
 `      <script type="text/javascript">
         
-          var plottype = <%=new JavaScriptSerializer().Serialize(plottype) %>;
-          if(plottype == "kwhr")
-          {
-              var timeSeries=<%=new JavaScriptSerializer().Serialize(names) %>;
+           jQuery(document).ready(function ($) {
+               $('#prev_bill').click(function ($){
+                   jQuery('#below-loader').html('<span class="glyphicon glyphicon-refresh spinning" style="margin-top:10px;"></span>');
+                   jQuery(this).val('Loading...');
+               });
+               $('#finder').click(function($){
+                   //$('#load').html('<span class="glyphicon glyphicon-refresh spinning">sd</span>');
+                   //$('#find_cust_Click').click();
+                   jQuery('#finder').val('Loading...');
+                   jQuery('#load').html('<span class="glyphicon glyphicon-refresh spinning"></span>');
+                   jQuery('#find_cust').click();
+                   return false;
+               });
+               $('#prev_consum').click(function($){
+                   jQuery('#below-loader').html('<span class="glyphicon glyphicon-refresh spinning" style="margin-top:10px;"></span>');
+                   jQuery(this).val('Loading...');
+               });
+                 
+               var plottype = <%=new JavaScriptSerializer().Serialize(plottype) %>;
+               if(plottype == "kwhr")
+               {
+                   var timeSeries=<%=new JavaScriptSerializer().Serialize(names) %>;
      
-              var en=<%=new JavaScriptSerializer().Serialize(prices) %>;
+                   var en=<%=new JavaScriptSerializer().Serialize(prices) %>;
 
-              var colorOptions=['#000A00','#200200','#FAEBD7','#7FFFD4','#8A2BE2','#D2691E','#6495ED','#556B2F','#8FBC8F','#FF1493','#DAA520','#800080',];
-              var colors = [];
-              //timeSeries = timeSeries.filter(function(e){return e});
-              for(var i=0;i<timeSeries.length;i++)
-              {
-                  if(timeSeries[i]!=null)
-                  {
-                      for(var b=0;b<timeSeries[i].length;b++)
-                      {
-                          colors.push(colorOptions[i]);
-                          timeSeries[i][b] = timeSeries[i][b].slice(-4);
-                      }
-                  }
-              }
-              en = en.filter(function(e){return e});
-          
-              jQuery(document).ready(function ($) {
-            
-
-                  $('#container_kwhr').highcharts({
-                      chart: {
-                          type: 'column',
-                          marginRight: 30,
-                          marginBottom: 50,
+                   var colorOptions=['#000A00','#200200','#FAEBD7','#7FFFD4','#8A2BE2','#D2691E','#6495ED','#556B2F','#8FBC8F','#FF1493','#DAA520','#800080',];
+                   var colors = [];
+                   //timeSeries = timeSeries.filter(function(e){return e});
+                   for(var i=0;i<timeSeries.length;i++)
+                   {
+                       if(timeSeries[i]!=null)
+                       {
+                           for(var b=0;b<timeSeries[i].length;b++)
+                           {
+                               colors.push(colorOptions[i]);
+                               timeSeries[i][b] = timeSeries[i][b].slice(-4);
+                           }
+                       }
+                   }
+                   if(en[0]!=null)
+                       en = en.filter(function(e){return e});                   
+                   if(en[0]!=null)
+                       $('#container_kwhr').highcharts({
+                           chart: {
+                               type: 'column',
+                               marginRight: 30,
+                               marginBottom: 50,
               
-                      },
-                      title: {
-                          text: 'Electricity Consumption',
-                          x: -20 //center
-                      },
-                      subtitle: {
-                          text: '',
-                          x: -20
-                      },
-                      xAxis: {
+                           },
+                           title: {
+                               text: 'Electricity Consumption',
+                               x: -20 //center
+                           },
+                           subtitle: {
+                               text: '',
+                               x: -20
+                           },
+                           xAxis: {
              
-                          categories:[{
-                              name: 'January',
-                              categories: timeSeries[0]                      
-                          },{
-                              name: 'February',
-                              categories: timeSeries[1]
-                          },{
-                              name: 'March',
-                              categories: timeSeries[2]
-                          },{
-                              name: 'April',
-                              categories: timeSeries[3]
-                          },{
-                              name: 'May',
-                              categories: timeSeries[4]
-                          },{
-                              name: 'June',
-                              categories: timeSeries[5]
-                          },{
-                              name: 'July',
-                              categories: timeSeries[6]
-                          },{
-                              name: 'August',
-                              categories: timeSeries[7]
-                          },{
-                              name: 'September',
-                              categories: timeSeries[8]
-                          },{
-                              name: 'October',
-                              categories: timeSeries[9]
-                          },{
-                              name: 'November',
-                              categories: timeSeries[10]
-                          },
-                          {
-                              name: 'December',
-                              categories: timeSeries[11]
-                          }]
-                      },
-                      yAxis: {
-                          title: {
+                               categories:[{
+                                   name: 'Jan',
+                                   categories: timeSeries[0]                      
+                               },{
+                                   name: 'Feb',
+                                   categories: timeSeries[1]
+                               },{
+                                   name: 'Mar',
+                                   categories: timeSeries[2]
+                               },{
+                                   name: 'Apr',
+                                   categories: timeSeries[3]
+                               },{
+                                   name: 'May',
+                                   categories: timeSeries[4]
+                               },{
+                                   name: 'Jun',
+                                   categories: timeSeries[5]
+                               },{
+                                   name: 'Jul',
+                                   categories: timeSeries[6]
+                               },{
+                                   name: 'Aug',
+                                   categories: timeSeries[7]
+                               },{
+                                   name: 'Sep',
+                                   categories: timeSeries[8]
+                               },{
+                                   name: 'Oct',
+                                   categories: timeSeries[9]
+                               },{
+                                   name: 'Nov',
+                                   categories: timeSeries[10]
+                               },
+                               {
+                                   name: 'Dec',
+                                   categories: timeSeries[11]
+                               }]
+                           },
+                           yAxis: {
+                               title: {
                     
-                              text: 'Energy (KWHrs)'
-                          },
-                          plotLines: [{
-                              value: 0,
-                              width: 1
-                          }]
-                      },
-                      tooltip: {
-                          valueSuffix: ' KWHr'
-                      },
-                      legend: {
-                          enabled: false,
-                          layout: 'horizontal',
-                          align: 'right',
-                          verticalAlign: 'top',
-                          x: -10,
-                          y: 100,
-                          borderWidth: 0
-                      },
-                      plotOptions: {
+                                   text: 'Electricity Consumption (KWHrs)'
+                               },
+                               plotLines: [{
+                                   value: 0,
+                                   width: 1
+                               }]
+                           },
+                           tooltip: {
+                               valueSuffix: ' KWHr'
+                           },
+                           legend: {
+                               enabled: false,
+                               layout: 'horizontal',
+                               align: 'right',
+                               verticalAlign: 'top',
+                               x: -10,
+                               y: 100,
+                               borderWidth: 0
+                           },
+                           plotOptions: {
                          
-                          column:{
-                              dataLabels: {
-                                  enabled: false,
-                                  color:['#000000','#AAAAAA']
-                              },
-                              grouping: true,
-                              groupPadding: 0,
-                              colorByPoint: true,
-                              colors:colors
-                          }
-                      },
+                               column:{
+                                   dataLabels: {
+                                       enabled: false,
+                                       color:['#000000','#AAAAAA']
+                                   },
+                                   grouping: true,
+                                   groupPadding: 0,
+                                   colorByPoint: true,
+                                   colors:colors
+                               }
+                           },
                      
-                      credits:false,
-                      series: [{
-                          data: en[0].concat(en[1]).concat(en[2]).concat(en[3]).concat(en[4]).concat(en[5]).concat(en[6]).concat(en[7]).concat(en[8]).concat(en[9]).concat(en[10]).concat(en[11])
-                      }]
-                  });
-              });
-   
-          }
-          else if(plottype=="rs")
-          {
-              var timeSeries=<%=new JavaScriptSerializer().Serialize(months) %>;
-     
-              var en=<%=new JavaScriptSerializer().Serialize(price) %>;
-              //timeSeries = timeSeries.filter(function(e){return e});
-          
-              en = en.filter(function(e){return e});
-          
-              jQuery(document).ready(function ($) {
-            
+                           credits:false,
+                           series: [{
+                               data: en[0].concat(en[1]).concat(en[2]).concat(en[3]).concat(en[4]).concat(en[5]).concat(en[6]).concat(en[7]).concat(en[8]).concat(en[9]).concat(en[10]).concat(en[11])
+                           }]
+                       });        
+               }
+               else if(plottype=="rs")
+               {
+                   var timeSeries=<%=new JavaScriptSerializer().Serialize(months) %>;                  
+                   var en=<%=new JavaScriptSerializer().Serialize(price) %>;
+                   //timeSeries = timeSeries.filter(function(e){return e});
+                   if(en!=null)
+                       en = en.filter(function(e){return e});          
+                   if(en!=null)
+                       $('#container_kwhr').highcharts({
+                           chart: {
+                               type: 'column',
+                               marginRight: 30,
+                               marginBottom: 70              
+                           },
+                           title: {
+                               text: 'Electricity Bill',
+                               x: -20 //center
+                           },
+                           subtitle: {
+                               text: '',
+                               x: -20
+                           },
+                           xAxis: {             
+                               categories:[{
+                                   categories: timeSeries   
+                               }]
+                           },
+                           yAxis: {
+                               title: {                    
+                                   text: 'Bill (Rs)'
+                               },
+                               plotLines: [{
+                                   value: 0,
+                                   width: 1
+                               }]
+                           },
+                           tooltip: {
+                               valueSuffix: ' Rs'
+                           },
+                           legend: {
+                               enabled: false,
+                               layout: 'horizontal',
+                               align: 'right',
+                               verticalAlign: 'top',
+                               x: -10,
+                               y: 100,
+                               borderWidth: 0
+                           },
+                           plotOptions: {                          
+                               column:{
+                                   dataLabels: {
+                                       enabled: false,
+                                       color:'black'
+                                   },
+                                   grouping: true,
+                                   groupPadding: 0,
+                                   colorByPoint: true
+                               }
+                           },
+                           colors: [                            
+                                     'skyblue'
+                           ],
+                           credits:false,
+                           series: [{
+                               name: 'Bill Price',
+                               data: en
+                           }]
+                       });
+                   }
+                   else
+                   {
 
-                  $('#container_kwhr').highcharts({
-                      chart: {
-                          type: 'column',
-                          marginRight: 30,
-                          marginBottom: 70,
-              
-                      },
-                      title: {
-                          text: 'Electricity Bill',
-                          x: -20 //center
-                      },
-                      subtitle: {
-                          text: '',
-                          x: -20
-                      },
-                      xAxis: {
-             
-                          categories:[{
-                              categories: timeSeries                    
-                         
-                          }]
-                      },
-                      yAxis: {
-                          title: {
-                    
-                              text: 'Bill (Rs)'
-                          },
-                          plotLines: [{
-                              value: 0,
-                              width: 1
-                          }]
-                      },
-                      tooltip: {
-                          valueSuffix: ' Rs'
-                      },
-                      legend: {
-                          enabled: false,
-                          layout: 'horizontal',
-                          align: 'right',
-                          verticalAlign: 'top',
-                          x: -10,
-                          y: 100,
-                          borderWidth: 0
-                      },
-                      plotOptions: {                          
-                          column:{
-                              dataLabels: {
-                                  enabled: true,
-                                  color:'black'
-                              },
-                              grouping: true,
-                              groupPadding: 0,
-                              colorByPoint: true
-                          }
-                      },
-                      colors: [
-                            
-                                '#B5CA92'
-                      ],
-                      credits:false,
-                      series: [{
-                          name: 'Bill Price',
-                          data: en
-                      }]
-                  });
-              });
-   
-          }
-          else
-          {
-
-          }
+                   }
+           });
     
     </script>
      <link rel="stylesheet" type="text/css" href="scripts/DefaultZ.css" />
@@ -291,7 +309,7 @@
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/2.2.4/modules/exporting.js"></script>
     <script src="scripts/grouped-categories.js"></script>
-    <form id="form1" runat="server" class="container bdy" style="background-color:white;">
+    <form id="form1" runat="server" class=" bdy" style="background-color:white;">
            <table class="top-row">
             <tr>
                 <td rowspan="2">
@@ -316,7 +334,7 @@
         </table>
          <br />
         <div class="upperboard">
-            <span class="blue-heading" style="">Write Details</span><br />
+            <span class="blue-heading" style="">Select Utility and Provide Customer Number</span><br />
         <asp:DropDownList ID="utilityList" runat="server" class="custom-textbox" Height="29px" AutoPostBack="True" OnSelectedIndexChanged="utilityList_SelectedIndexChanged">
             <asp:ListItem Selected="True" Value="none">Select Utility</asp:ListItem>
             <asp:ListItem Value="bses_delhi">BSES Delhi</asp:ListItem>
@@ -1200,8 +1218,12 @@
         <asp:TextBox ID="cust_no" runat="server" class="custom-textbox" style="height:29px" placeholder="  Enter Customer ID"></asp:TextBox>
 
             
-        <asp:Button ID="find_cust" runat="server" OnClick="find_cust_Click" Text="Find" class="btn btn-info" style="float:none;border-radius:0px;height:28px;width:75px;padding-top:3px;margin-top:-2px;font-weight:bolder;" />
-       <br />
+        <asp:Button ID="find_cust" runat="server" OnClick="find_cust_Click" style="display:none;"  />
+        <input id="finder"  value="Find" class="btn btn-info"
+            data-loading-text="Loading.." 
+             style="float:none;border-radius:0px;height:28px;width:105px;padding-top:3px;margin-top:-2px;font-weight:bolder;"/>
+        <span id="load"></span>
+        <br />
         </div>
         <br /> <hr /><br />
         <div id="wrongId" runat="server" class="alert alert-danger" visible="false" style="border-radius:0;">
@@ -1212,11 +1234,13 @@
     <div id="tableContainer" runat="server" class="tabclass"></div>
         <br />
         <hr /><br />
+   
         <div class="btn-group" style="float:left;padding-left:20px;z-index:10;">            
-            <asp:Button runat="server" ID="prev_consum" class="btn btn-default" Text="Previous Consumption" OnClick="prev_consum_Click"/>
-            <asp:Button runat="server" ID="prev_bill" class="btn btn-default" Text="Previous Bills" OnClick="prev_bill_Click" />          
-        </div>
-        <br />
+            <asp:Button runat="server" ID="prev_consum" class="btn btn-default load" Text="Previous Consumption" OnClick="prev_consum_Click"/>
+            <asp:Button runat="server" ID="prev_bill" class="btn btn-default load" Text="Previous Bills" OnClick="prev_bill_Click" />   
+                  
+        </div><span id="below-loader" style="padding:5px;"></span> 
+        <br /><br />
         <div id="container_kwhr" class="chartclass" runat="server"></div><br />
             <div id="sorry" runat="server" class="alert alert-danger" visible="false" style="border-radius:0;">
                 <strong>Oh snap!</strong> Data not available. Please try some other option.
